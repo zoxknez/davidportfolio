@@ -10,9 +10,10 @@ export function ProgramCard({ program }: { program: Program }) {
   const media: Media[] = useMemo(() => {
     const arr: Media[] = [];
     if (program.image) arr.push({ kind: "image", src: program.image });
+    if (program.gallery?.length) arr.push(...program.gallery.map((g) => ({ kind: "image", src: g }) as Media));
     if (program.trailer) arr.push({ kind: "video", src: program.trailer, poster: program.image });
     return arr.length ? arr : [{ kind: "image", src: "/vercel.svg" }];
-  }, [program.image, program.trailer]);
+  }, [program.image, program.gallery, program.trailer]);
 
   const [idx, setIdx] = useState(0);
   useEffect(() => {

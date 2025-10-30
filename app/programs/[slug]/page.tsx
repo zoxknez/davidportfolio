@@ -6,16 +6,19 @@ import { getProgram } from "@/data/programs";
 import { Button } from "@/components/ui/button";
 import { useEffect, useMemo, useState } from "react";
 
+type Media = { kind: "image"; src: string } | { kind: "video"; src: string; poster?: string };
+
 export default function ProgramDetail({ params }: { params: { slug: string } }) {
   const program = getProgram(params.slug);
   if (!program) return notFound();
 
-  const media = useMemo(() => {
-    const arr: Array<{ kind: "image" | "video"; src: string; poster?: string }> = [];
+  const media: Media[] = useMemo(() => {
+    const arr: Media[] = [];
     if (program.image) arr.push({ kind: "image", src: program.image });
+    if (program.gallery?.length) arr.push(...program.gallery.map((g) => ({ kind: "image", src: g } as Media)));
     if (program.trailer) arr.push({ kind: "video", src: program.trailer, poster: program.image });
-    return arr.length ? arr : [];
-  }, [program.image, program.trailer]);
+    return arr;
+  }, [program.image, program.gallery, program.trailer]);
 
   const [idx, setIdx] = useState(0);
   useEffect(() => {
