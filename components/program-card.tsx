@@ -2,33 +2,45 @@
 
 import Image from "next/image";
 import { type Program } from "@/data/programs";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+type Media = { kind: "image"; src: string } | { kind: "video"; src: string; poster?: string };
 
 export function ProgramCard({ program }: { program: Program }) {
-  const [hovered, setHovered] = useState(false);
+  const media: Media[] = useMemo(() => {
+    const arr: Media[] = [];
+    if (program.image) arr.push({ kind: "image", src: program.image });
+    if (program.trailer) arr.push({ kind: "video", src: program.trailer, poster: program.image });
+    return arr.length ? arr : [{ kind: "image", src: "/vercel.svg" }];
+  }, [program.image, program.trailer]);
+
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setIdx((i) => (i + 1) % media.length), 2000);
+    return () => clearInterval(id);
+  }, [media.length]);
+
   return (
     <a
       href={`/programs/${program.slug}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
       className="group relative overflow-hidden rounded-2xl border bg-white/80 backdrop-blur transition hover:shadow-lg dark:border-white/10 dark:bg-zinc-900/70"
     >
       <div className="relative aspect-[16/9] w-full">
-        {program.trailer ? (
-          <video
-            className="h-full w-full object-cover transition-opacity duration-300"
-            muted
-            playsInline
-            loop
-            autoPlay={hovered}
-            poster={program.image}
-            style={{ opacity: hovered ? 1 : 0.9 }}
+        {media.map((m, i) => (
+          <div
+            key={`${m.kind}-${i}`}
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{ opacity: i === idx ? 1 : 0 }}
           >
-            <source src={program.trailer} type="video/mp4" />
-          </video>
-        ) : (
-          <Image src={program.image} alt={program.title} fill className="object-cover" />
-        )}
+            {m.kind === "video" ? (
+              <video className="h-full w-full object-cover" muted playsInline loop autoPlay poster={m.poster}>
+                <source src={m.src} type="video/mp4" />
+              </video>
+            ) : (
+              <Image src={m.src} alt={program.title} fill className="object-cover" />
+            )}
+          </div>
+        ))}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 p-4">
           <h3 className="text-lg font-semibold text-white">{program.title}</h3>
