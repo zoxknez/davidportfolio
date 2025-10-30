@@ -44,7 +44,7 @@ export default function RecommendationPage({ searchParams }: { searchParams: Rec
           </Button>
         </div>
         
-        <div className="mt-12 sm:mt-0 pt-0">
+        <div className="mt-12 sm:mt-16 md:mt-20 pt-0">
           <h1 className={`text-2xl sm:text-3xl md:text-4xl font-semibold text-white transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
             Your Recommendation
           </h1>
