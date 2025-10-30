@@ -24,7 +24,7 @@ export function ProgramCard({ program }: { program: Program }) {
   return (
     <a
       href={`/programs/${program.slug}`}
-      className="group relative overflow-hidden rounded-2xl border bg-white/80 backdrop-blur transition hover:shadow-lg dark:border-white/10 dark:bg-zinc-900/70"
+      className="group relative overflow-hidden rounded-2xl glass-card glass-card-hover animate-fade-in"
     >
       <div className="relative aspect-[16/9] w-full">
         {media.map((m, i) => (
@@ -48,11 +48,11 @@ export function ProgramCard({ program }: { program: Program }) {
           <p className="mt-1 line-clamp-1 text-xs text-white/80">{program.goal}</p>
         </div>
       </div>
-      <div className="flex items-center justify-between p-4 text-xs text-zinc-600 dark:text-zinc-400">
-        <span className="rounded-full bg-zinc-100 px-2 py-1 text-[10px] uppercase tracking-wide dark:bg-zinc-800">
+      <div className="flex items-center justify-between p-5 text-xs">
+        <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-medium uppercase tracking-wide text-white/90 backdrop-blur-sm">
           {program.level}
         </span>
-        <span>
+        <span className="text-white/70">
           {program.weeks} w • {program.daysPerWeek} d/w
         </span>
       </div>
