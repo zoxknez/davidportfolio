@@ -2,12 +2,44 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Mail, Globe, Instagram, Facebook, MessageSquare } from "lucide-react";
 
 export default function ContactPage() {
   const [mounted, setMounted] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   useEffect(() => setMounted(true), []);
+
+  const contactInfo = [
+    {
+      icon: Mail,
+      label: "Email",
+      value: "david@fitnesscoach.com",
+      href: "mailto:david@fitnesscoach.com",
+      color: "text-white/90",
+    },
+    {
+      icon: Globe,
+      label: "Website",
+      value: "www.davidfitness.com",
+      href: "https://www.davidfitness.com",
+      color: "text-white/90",
+    },
+    {
+      icon: Instagram,
+      label: "Instagram",
+      value: "@davidfitness",
+      href: "https://instagram.com/davidfitness",
+      color: "text-white/90",
+    },
+    {
+      icon: Facebook,
+      label: "Facebook",
+      value: "David Fitness Coach",
+      href: "https://facebook.com/davidfitness",
+      color: "text-white/90",
+    },
+  ];
 
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
@@ -30,7 +62,7 @@ export default function ContactPage() {
           </Button>
         </div>
         
-        <div className="mt-12 sm:mt-0 pt-0">
+        <div className="mt-12 sm:mt-16 md:mt-20 pt-0">
           <h1 className={`text-2xl sm:text-3xl md:text-4xl font-semibold text-white transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
             Get in touch
           </h1>
@@ -38,9 +70,41 @@ export default function ContactPage() {
             Let's discuss your training goals.
           </p>
         </div>
+
+        {/* Contact Info Cards */}
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.15s" }}>
+          {contactInfo.map((contact, idx) => {
+            const Icon = contact.icon;
+            return (
+              <a
+                key={idx}
+                href={contact.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-lg hover:shadow-white/10"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="rounded-lg border border-white/10 bg-white/5 p-2.5 transition-all duration-300 group-hover:border-white/20 group-hover:bg-white/10">
+                    <Icon className="h-5 w-5 text-white/80" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-white/60 uppercase tracking-wide mb-1">{contact.label}</div>
+                    <div className={`text-sm font-medium truncate ${contact.color}`}>{contact.value}</div>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Contact Form */}
         {mounted && (
-          <form className={`rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.2s" }} onSubmit={(e) => { e.preventDefault(); alert("Demo: Form would send"); }}>
-            <div className="grid gap-4">
+          <div className={`rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.2s" }}>
+            <div className="flex items-center gap-2 mb-4">
+              <MessageSquare className="h-5 w-5 text-white/80" />
+              <h2 className="text-lg font-semibold text-white">Send a message</h2>
+            </div>
+            <form onSubmit={(e) => { e.preventDefault(); alert("Demo: Form would send"); }} className="grid gap-4">
               <input
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -66,10 +130,10 @@ export default function ContactPage() {
                 type="submit" 
                 className="w-full h-12 rounded-full border border-white/10 bg-white/5 text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10"
               >
-                Send
+                Send Message
               </Button>
-            </div>
-          </form>
+            </form>
+          </div>
         )}
       </main>
     </div>

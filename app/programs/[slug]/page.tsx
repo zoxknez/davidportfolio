@@ -4,16 +4,17 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getProgram } from "@/data/programs";
 import { Button } from "@/components/ui/button";
-import { useEffect, useMemo, useState, Suspense } from "react";
+import { useEffect, useMemo, useState, Suspense, use } from "react";
 import { useSearchParams } from "next/navigation";
 
 type Media = { kind: "image"; src: string } | { kind: "video"; src: string; poster?: string };
 
-function ProgramDetailContent({ params }: { params: { slug: string } }) {
+function ProgramDetailContent({ paramsPromise }: { paramsPromise: Promise<{ slug: string }> }) {
   const [mounted, setMounted] = useState(false);
   const searchParams = useSearchParams();
   const purchased = searchParams.get("purchased") === "true";
   
+  const params = use(paramsPromise);
   const program = getProgram(params.slug);
   if (!program) return notFound();
 
@@ -125,7 +126,7 @@ function ProgramDetailContent({ params }: { params: { slug: string } }) {
   );
 }
 
-export default function ProgramDetail({ params }: { params: { slug: string } }) {
+export default function ProgramDetail({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
       {/* Animated Gradient Background */}
@@ -141,7 +142,7 @@ export default function ProgramDetail({ params }: { params: { slug: string } }) 
           <div className="text-white/70">Loading...</div>
         </main>
       }>
-        <ProgramDetailContent params={params} />
+        <ProgramDetailContent paramsPromise={params} />
       </Suspense>
     </div>
   );
