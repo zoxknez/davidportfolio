@@ -25,7 +25,7 @@ type BackgroundVideoProps = {
   rotateMs?: number;
 };
 
-export function BackgroundVideo({ opacity = 0.6, rotateMs = 12000 }: BackgroundVideoProps) {
+export function BackgroundVideo({ opacity = 0.6, rotateMs = 2000 }: BackgroundVideoProps) {
   const [index, setIndex] = useState(0);
   const current = useMemo(() => SOURCES[index % SOURCES.length], [index]);
 
