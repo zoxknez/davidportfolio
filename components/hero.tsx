@@ -15,14 +15,20 @@ export function Hero() {
       <p className="max-w-xl text-base text-white/80 animate-slide-up" style={{ animationDelay: "0.1s" }}>
         Elite coaching. Minimal distractions.
       </p>
-      <div className="flex w-full flex-col items-center justify-center gap-3 sm:flex-row animate-slide-up" style={{ animationDelay: "0.2s" }}>
-        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-8 text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+      <div className="flex w-full flex-col items-center justify-center gap-3 sm:flex-row animate-slide-up flex-wrap" style={{ animationDelay: "0.2s" }}>
+        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
           <a href="/quiz">Start Training</a>
         </Button>
-        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-8 text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
           <a href="/programs">Programs</a>
         </Button>
-        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-8 text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+          <a href="/coaching/1on1">1-on-1</a>
+        </Button>
+        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+          <a href="/coaching/group">Group</a>
+        </Button>
+        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
           <a href="/contact">Contact</a>
         </Button>
       </div>
