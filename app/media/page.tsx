@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Play, ImageIcon } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
