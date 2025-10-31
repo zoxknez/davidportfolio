@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { type Program } from "@/data/programs";
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 
 type Media = { kind: "image"; src: string } | { kind: "video"; src: string; poster?: string };
 
-export function ProgramCard({ program }: { program: Program }) {
+function ProgramCardComponent({ program }: { program: Program }) {
   const media: Media[] = useMemo(() => {
     const arr: Media[] = [];
     if (program.image) arr.push({ kind: "image", src: program.image });
@@ -22,7 +23,7 @@ export function ProgramCard({ program }: { program: Program }) {
   }, [media.length]);
 
   return (
-    <a
+    <Link
       href={`/programs/${program.slug}`}
       className="group relative overflow-hidden rounded-2xl glass-card glass-card-hover animate-fade-in"
     >
@@ -38,7 +39,14 @@ export function ProgramCard({ program }: { program: Program }) {
                 <source src={m.src} type="video/mp4" />
               </video>
             ) : (
-              <Image src={m.src} alt={program.title} fill className="object-cover" />
+              <Image 
+                src={m.src} 
+                alt={`${program.title} - ${program.goal}`} 
+                fill 
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                loading="lazy"
+              />
             )}
           </div>
         ))}
@@ -56,8 +64,11 @@ export function ProgramCard({ program }: { program: Program }) {
           {program.weeks} w • {program.daysPerWeek} d/w
         </span>
       </div>
-    </a>
+    </Link>
   );
 }
+
+export const ProgramCard = memo(ProgramCardComponent);
+ProgramCard.displayName = "ProgramCard";
 
 

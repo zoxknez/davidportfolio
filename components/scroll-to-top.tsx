@@ -1,27 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 
-export function ScrollToTop() {
+function ScrollToTopComponent() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(window.scrollY > 300);
     };
 
-    window.addEventListener("scroll", toggleVisibility);
+    // Use passive listener for better performance
+    window.addEventListener("scroll", toggleVisibility, { passive: true });
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }, []);
 
   if (!isVisible) return null;
 
@@ -36,4 +33,7 @@ export function ScrollToTop() {
     </Button>
   );
 }
+
+export const ScrollToTop = memo(ScrollToTopComponent);
+ScrollToTop.displayName = "ScrollToTop";
 

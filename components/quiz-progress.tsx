@@ -1,6 +1,8 @@
 "use client";
 
-export function QuizProgress({ current, total }: { current: number; total: number }) {
+import { memo } from "react";
+
+function QuizProgressComponent({ current, total }: { current: number; total: number }) {
   const progress = (current / total) * 100;
 
   return (
@@ -18,4 +20,7 @@ export function QuizProgress({ current, total }: { current: number; total: numbe
     </div>
   );
 }
+
+export const QuizProgress = memo(QuizProgressComponent);
+QuizProgress.displayName = "QuizProgress";
 

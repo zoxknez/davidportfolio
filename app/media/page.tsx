@@ -112,7 +112,14 @@ export default function MediaPage() {
                     <source src={item.src} type="video/mp4" />
                   </video>
                 ) : (
-                  <Image src={item.src} alt={item.title} fill className="object-cover" />
+                  <Image 
+                    src={item.src} 
+                    alt={item.title} 
+                    fill 
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="lazy"
+                  />
                 )}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">

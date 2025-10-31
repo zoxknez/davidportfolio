@@ -5,10 +5,20 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { getProgram } from "@/data/programs";
 import { Button } from "@/components/ui/button";
 import { notFound } from "next/navigation";
+import { checkoutFormSchema, type CheckoutFormData } from "@/lib/validations";
+import { ZodError } from "zod";
 
 function CheckoutContent() {
   const [mounted, setMounted] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", card: "", expiry: "", cvv: "" });
+  const [form, setForm] = useState<CheckoutFormData & { card: string }>({ 
+    name: "", 
+    email: "", 
+    card: "", 
+    expiry: "", 
+    cvv: "" 
+  });
+  const [errors, setErrors] = useState<Partial<Record<keyof CheckoutFormData, string>>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const slug = searchParams.get("slug");
@@ -18,11 +28,48 @@ function CheckoutContent() {
 
   useEffect(() => setMounted(true), []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Demo: would process payment
-    alert(`Demo: Would process payment for ${program.title}`);
-    router.push(`/programs/${program.slug}?purchased=true`);
+    setIsSubmitting(true);
+    setErrors({});
+
+    try {
+      // Format card number without spaces for validation
+      const cardNumber = form.card.replace(/\s/g, "");
+      const validated = checkoutFormSchema.parse({
+        ...form,
+        card: cardNumber,
+      });
+      
+      // Demo: would process payment
+      console.log("Payment data:", validated);
+      
+      // Simulate payment processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      router.push(`/programs/${program.slug}?purchased=true`);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const newErrors: Partial<Record<keyof CheckoutFormData, string>> = {};
+        error.errors.forEach((err) => {
+          const field = err.path[0] as keyof CheckoutFormData;
+          if (field) {
+            newErrors[field] = err.message;
+          }
+        });
+        setErrors(newErrors);
+      } else {
+        setErrors({ card: "An error occurred. Please try again." });
+      }
+      setIsSubmitting(false);
+    }
+  };
+
+  // Format card number with spaces
+  const formatCardNumber = (value: string) => {
+    const cleaned = value.replace(/\s/g, "");
+    const formatted = cleaned.match(/.{1,4}/g)?.join(" ") || cleaned;
+    return formatted.slice(0, 19); // Max 16 digits + 3 spaces
   };
 
   return (
@@ -52,76 +99,167 @@ function CheckoutContent() {
             
             <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               <div>
-                <label className="mb-2 block text-xs text-white/70">Name</label>
+                <label htmlFor="checkout-name" className="mb-2 block text-xs text-white/70">
+                  Name
+                </label>
                 <input
-                  required
+                  id="checkout-name"
                   value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 focus:border-white/40 focus:bg-white/10 backdrop-blur-sm"
+                  onChange={(e) => {
+                    setForm({ ...form, name: e.target.value });
+                    if (errors.name) setErrors({ ...errors, name: undefined });
+                  }}
+                  aria-label="Name"
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "checkout-name-error" : undefined}
+                  className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
+                    errors.name 
+                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
+                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                  }`}
                   placeholder="John Doe"
                 />
+                {errors.name && (
+                  <p id="checkout-name-error" className="mt-1 text-xs text-red-400" role="alert">
+                    {errors.name}
+                  </p>
+                )}
               </div>
               
               <div>
-                <label className="mb-2 block text-xs text-white/70">Email</label>
+                <label htmlFor="checkout-email" className="mb-2 block text-xs text-white/70">
+                  Email
+                </label>
                 <input
-                  required
+                  id="checkout-email"
                   type="email"
                   value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 focus:border-white/40 focus:bg-white/10 backdrop-blur-sm"
+                  onChange={(e) => {
+                    setForm({ ...form, email: e.target.value });
+                    if (errors.email) setErrors({ ...errors, email: undefined });
+                  }}
+                  aria-label="Email"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "checkout-email-error" : undefined}
+                  className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
+                    errors.email 
+                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
+                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                  }`}
                   placeholder="john@example.com"
                 />
+                {errors.email && (
+                  <p id="checkout-email-error" className="mt-1 text-xs text-red-400" role="alert">
+                    {errors.email}
+                  </p>
+                )}
               </div>
               
               <div>
-                <label className="mb-2 block text-xs text-white/70">Card Number</label>
+                <label htmlFor="checkout-card" className="mb-2 block text-xs text-white/70">
+                  Card Number
+                </label>
                 <input
-                  required
+                  id="checkout-card"
+                  type="text"
+                  inputMode="numeric"
                   value={form.card}
-                  onChange={(e) => setForm({ ...form, card: e.target.value.replace(/\D/g, "").slice(0, 16) })}
-                  className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 focus:border-white/40 focus:bg-white/10 backdrop-blur-sm"
+                  onChange={(e) => {
+                    const formatted = formatCardNumber(e.target.value.replace(/\D/g, ""));
+                    setForm({ ...form, card: formatted });
+                    if (errors.card) setErrors({ ...errors, card: undefined });
+                  }}
+                  aria-label="Card Number"
+                  aria-invalid={!!errors.card}
+                  aria-describedby={errors.card ? "checkout-card-error" : undefined}
+                  className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
+                    errors.card 
+                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
+                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                  }`}
                   placeholder="1234 5678 9012 3456"
                   maxLength={19}
                 />
+                {errors.card && (
+                  <p id="checkout-card-error" className="mt-1 text-xs text-red-400" role="alert">
+                    {errors.card}
+                  </p>
+                )}
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="mb-2 block text-xs text-white/70">Expiry</label>
+                  <label htmlFor="checkout-expiry" className="mb-2 block text-xs text-white/70">
+                    Expiry
+                  </label>
                   <input
-                    required
+                    id="checkout-expiry"
+                    type="text"
+                    inputMode="numeric"
                     value={form.expiry}
                     onChange={(e) => {
                       let val = e.target.value.replace(/\D/g, "").slice(0, 4);
                       if (val.length >= 2) val = val.slice(0, 2) + "/" + val.slice(2);
                       setForm({ ...form, expiry: val });
+                      if (errors.expiry) setErrors({ ...errors, expiry: undefined });
                     }}
-                    className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 focus:border-white/40 focus:bg-white/10 backdrop-blur-sm"
+                    aria-label="Card Expiry"
+                    aria-invalid={!!errors.expiry}
+                    aria-describedby={errors.expiry ? "checkout-expiry-error" : undefined}
+                    className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
+                      errors.expiry 
+                        ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
+                        : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                    }`}
                     placeholder="MM/YY"
                     maxLength={5}
                   />
+                  {errors.expiry && (
+                    <p id="checkout-expiry-error" className="mt-1 text-xs text-red-400" role="alert">
+                      {errors.expiry}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <label className="mb-2 block text-xs text-white/70">CVV</label>
+                  <label htmlFor="checkout-cvv" className="mb-2 block text-xs text-white/70">
+                    CVV
+                  </label>
                   <input
-                    required
+                    id="checkout-cvv"
                     type="text"
+                    inputMode="numeric"
                     value={form.cvv}
-                    onChange={(e) => setForm({ ...form, cvv: e.target.value.replace(/\D/g, "").slice(0, 3) })}
-                    className="w-full rounded-xl border border-white/20 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 focus:border-white/40 focus:bg-white/10 backdrop-blur-sm"
+                    onChange={(e) => {
+                      setForm({ ...form, cvv: e.target.value.replace(/\D/g, "").slice(0, 4) });
+                      if (errors.cvv) setErrors({ ...errors, cvv: undefined });
+                    }}
+                    aria-label="Card CVV"
+                    aria-invalid={!!errors.cvv}
+                    aria-describedby={errors.cvv ? "checkout-cvv-error" : undefined}
+                    className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
+                      errors.cvv 
+                        ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
+                        : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                    }`}
                     placeholder="123"
-                    maxLength={3}
+                    maxLength={4}
                   />
+                  {errors.cvv && (
+                    <p id="checkout-cvv-error" className="mt-1 text-xs text-red-400" role="alert">
+                      {errors.cvv}
+                    </p>
+                  )}
                 </div>
               </div>
               
               <Button 
                 type="submit"
-                variant="ghost" 
-                className="mt-6 w-full h-12 rounded-full border border-white/10 bg-white/5 text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10"
+                variant="ghost"
+                disabled={isSubmitting}
+                className="mt-6 w-full h-12 rounded-full border border-white/10 bg-white/5 text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Complete Purchase"
               >
-                Complete Purchase
+                {isSubmitting ? "Processing..." : "Complete Purchase"}
               </Button>
             </form>
           </div>
