@@ -51,7 +51,7 @@ function CheckoutContent() {
     } catch (error) {
       if (error instanceof ZodError) {
         const newErrors: Partial<Record<keyof CheckoutFormData, string>> = {};
-        error.errors.forEach((err) => {
+        error.issues.forEach((err) => {
           const field = err.path[0] as keyof CheckoutFormData;
           if (field) {
             newErrors[field] = err.message;

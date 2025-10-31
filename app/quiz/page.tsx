@@ -52,7 +52,7 @@ export default function QuizPage() {
               ].map(([val, label]) => (
                 <button
                   key={val}
-                  onClick={() => setGoal(val)}
+                  onClick={() => setGoal(val as string)}
                   className={`rounded-full border px-6 py-4 text-sm font-medium transition-all duration-300 backdrop-blur-sm ${
                     goal === val 
                       ? "border-white/40 bg-white/10 text-white shadow-lg shadow-white/10" 
@@ -122,7 +122,7 @@ export default function QuizPage() {
               ].map(([val, label]) => (
                 <button
                   key={val}
-                  onClick={() => setSex(val)}
+                  onClick={() => setSex(val as string)}
                   className={`flex-1 rounded-full border px-6 py-4 text-sm font-medium transition-all duration-300 backdrop-blur-sm ${
                     sex === val 
                       ? "border-white/40 bg-white/10 text-white shadow-lg shadow-white/10" 

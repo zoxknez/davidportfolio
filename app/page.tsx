@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Hero } from "@/components/hero";
 import { BackgroundVideo } from "@/components/background-video";
 

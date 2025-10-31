@@ -96,7 +96,7 @@ export default function NewsPage() {
 
         {/* News Grid */}
         <div className={`mt-8 grid grid-cols-1 gap-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.15s" }}>
-          {newsItems.map((item, idx) => (
+          {newsItems.map((item) => (
             <article
               key={item.id}
               className="group rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 sm:p-6 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-lg hover:shadow-white/10"
