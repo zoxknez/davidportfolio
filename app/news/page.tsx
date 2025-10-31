@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
 import { AnimatedBackground } from "@/components/animated-background";
