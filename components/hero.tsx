@@ -1,13 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { TrainingDropdown } from "@/components/training-dropdown";
+import { useMounted } from "@/hooks/use-mounted";
+import { buttonStyles } from "@/lib/styles";
 
 export function Hero() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useMounted();
 
   return (
     <section className={`flex flex-col items-center gap-8 text-center transition-opacity duration-700 ${mounted ? "opacity-100" : "opacity-0"}`}>
@@ -28,20 +28,20 @@ export function Hero() {
         </p>
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-4 sm:flex-row animate-slide-up flex-wrap mt-4" style={{ animationDelay: "0.3s" }}>
-        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+        <Button variant="ghost" className={buttonStyles.primary} asChild>
           <Link href="/quiz">Start Training</Link>
         </Button>
-        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+        <Button variant="ghost" className={buttonStyles.primary} asChild>
           <Link href="/programs">Programs</Link>
         </Button>
         <TrainingDropdown />
-        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+        <Button variant="ghost" className={buttonStyles.primary} asChild>
           <Link href="/media">Media</Link>
         </Button>
-        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+        <Button variant="ghost" className={buttonStyles.primary} asChild>
           <Link href="/news">News</Link>
         </Button>
-        <Button variant="ghost" className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" asChild>
+        <Button variant="ghost" className={buttonStyles.primary} asChild>
           <Link href="/contact">Contact</Link>
         </Button>
       </div>

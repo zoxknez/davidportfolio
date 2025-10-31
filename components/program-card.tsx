@@ -4,17 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { type Program } from "@/data/programs";
 import { memo, useEffect, useMemo, useState } from "react";
-
-type Media = { kind: "image"; src: string } | { kind: "video"; src: string; poster?: string };
+import { createProgramMedia, type Media } from "@/lib/program-media";
 
 function ProgramCardComponent({ program }: { program: Program }) {
-  const media: Media[] = useMemo(() => {
-    const arr: Media[] = [];
-    if (program.image) arr.push({ kind: "image", src: program.image });
-    if (program.gallery?.length) arr.push(...program.gallery.map((g) => ({ kind: "image", src: g }) as Media));
-    if (program.trailer) arr.push({ kind: "video", src: program.trailer, poster: program.image });
-    return arr.length ? arr : [{ kind: "image", src: "/vercel.svg" }];
-  }, [program.image, program.gallery, program.trailer]);
+  const media: Media[] = useMemo(() => createProgramMedia(program, true), [program]);
 
   const [idx, setIdx] = useState(0);
   useEffect(() => {

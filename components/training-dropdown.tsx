@@ -4,6 +4,7 @@ import { memo, useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, User, Users } from "lucide-react";
+import { buttonStyles } from "@/lib/styles";
 
 function TrainingDropdownComponent() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +41,7 @@ function TrainingDropdownComponent() {
         onClick={toggleDropdown}
         aria-expanded={isOpen}
         aria-haspopup="true"
-        className="h-12 rounded-full border border-white/10 bg-white/5 px-6 sm:px-8 text-sm sm:text-base text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10 flex items-center gap-2"
+        className={`${buttonStyles.primary} flex items-center gap-2`}
       >
         Training
         <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />

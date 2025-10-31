@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { useMounted } from "@/hooks/use-mounted";
+import { AnimatedBackground } from "@/components/animated-background";
+import { BackButton } from "@/components/back-button";
 
 export default function NewsPage() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useMounted();
 
   const newsItems = [
     {
@@ -66,24 +67,10 @@ export default function NewsPage() {
 
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="fixed inset-0 animated-gradient" />
-      <div className="fixed inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60" />
-      
-      {/* Animated Glow Orbs */}
-      <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animated-glow" />
-      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animated-glow" style={{ animationDelay: "1.5s" }} />
+      <AnimatedBackground />
 
       <main className="relative mx-auto w-full max-w-4xl px-4 sm:px-6 py-4 sm:py-12 z-10">
-        <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20">
-          <Button 
-            variant="ghost" 
-            className="h-9 sm:h-10 rounded-full border border-white/10 bg-white/5 px-3 sm:px-4 text-xs sm:text-sm text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" 
-            asChild
-          >
-            <a href="/">← Home</a>
-          </Button>
-        </div>
+        <BackButton />
 
         <div className="mt-12 sm:mt-16 md:mt-20 pt-0">
           <h1 className={`text-2xl sm:text-3xl md:text-4xl font-semibold text-white transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>

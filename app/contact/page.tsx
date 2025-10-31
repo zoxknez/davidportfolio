@@ -1,20 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mail, Globe, Instagram, Facebook, MessageSquare } from "lucide-react";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 import { ZodError } from "zod";
+import { useMounted } from "@/hooks/use-mounted";
+import { AnimatedBackground } from "@/components/animated-background";
+import { BackButton } from "@/components/back-button";
+import { inputStyles, buttonStyles } from "@/lib/styles";
 
 export default function ContactPage() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const [form, setForm] = useState<ContactFormData>({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-
-  useEffect(() => setMounted(true), []);
 
   const contactInfo = [
     {
@@ -49,24 +50,10 @@ export default function ContactPage() {
 
   return (
     <div className="h-screen font-sans text-white relative overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="fixed inset-0 animated-gradient" />
-      <div className="fixed inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60" />
-      
-      {/* Animated Glow Orbs */}
-      <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animated-glow" />
-      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animated-glow" style={{ animationDelay: "1.5s" }} />
+      <AnimatedBackground />
 
       <main className="relative mx-auto h-full w-full max-w-2xl flex flex-col gap-4 sm:gap-6 px-4 sm:px-6 py-4 sm:py-8 z-10 overflow-y-auto">
-        <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20">
-          <Button 
-            variant="ghost" 
-            className="h-9 sm:h-10 rounded-full border border-white/10 bg-white/5 px-3 sm:px-4 text-xs sm:text-sm text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" 
-            asChild
-          >
-            <Link href="/">← Home</Link>
-          </Button>
-        </div>
+        <BackButton />
         
         <div className="mt-12 sm:mt-4 pt-0">
           <h1 className={`text-2xl sm:text-3xl md:text-4xl font-semibold text-white transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
@@ -167,11 +154,9 @@ export default function ContactPage() {
                   aria-label="Name"
                   aria-invalid={!!errors.name}
                   aria-describedby={errors.name ? "name-error" : undefined}
-                  className={`w-full h-12 rounded-lg border px-4 text-sm text-white placeholder:text-white/40 outline-none transition-all duration-300 backdrop-blur-sm ${
-                    errors.name 
-                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
-                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10 focus:ring-2 focus:ring-white/20"
-                  }`}
+                  className={`${inputStyles.base} h-12 rounded-lg ${
+                    errors.name ? inputStyles.error : inputStyles.default
+                  } focus:ring-2 focus:ring-white/20`}
                 />
                 {errors.name && (
                   <p id="name-error" className="text-xs text-red-400" role="alert">
@@ -196,11 +181,9 @@ export default function ContactPage() {
                   aria-label="Email"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? "email-error" : undefined}
-                  className={`w-full h-12 rounded-lg border px-4 text-sm text-white placeholder:text-white/40 outline-none transition-all duration-300 backdrop-blur-sm ${
-                    errors.email 
-                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
-                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10 focus:ring-2 focus:ring-white/20"
-                  }`}
+                  className={`${inputStyles.base} h-12 rounded-lg ${
+                    errors.email ? inputStyles.error : inputStyles.default
+                  } focus:ring-2 focus:ring-white/20`}
                 />
                 {errors.email && (
                   <p id="email-error" className="text-xs text-red-400" role="alert">
@@ -225,11 +208,9 @@ export default function ContactPage() {
                   aria-label="Message"
                   aria-invalid={!!errors.message}
                   aria-describedby={errors.message ? "message-error" : undefined}
-                  className={`w-full rounded-lg border px-4 py-3 text-sm text-white placeholder:text-white/40 outline-none transition-all duration-300 resize-none backdrop-blur-sm ${
-                    errors.message 
-                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
-                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10 focus:ring-2 focus:ring-white/20"
-                  }`}
+                  className={`${inputStyles.base} rounded-lg resize-none ${
+                    errors.message ? inputStyles.error : inputStyles.default
+                  } focus:ring-2 focus:ring-white/20`}
                 />
                 {errors.message && (
                   <p id="message-error" className="text-xs text-red-400" role="alert">
@@ -242,7 +223,7 @@ export default function ContactPage() {
                 variant="ghost" 
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full h-12 rounded-lg border border-white/10 bg-white/5 text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className={`w-full h-12 rounded-lg ${buttonStyles.primary.replace("rounded-full", "rounded-lg")} disabled:opacity-50 disabled:cursor-not-allowed font-medium`}
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </Button>

@@ -7,11 +7,12 @@ import { getProgram } from "@/data/programs";
 import { Button } from "@/components/ui/button";
 import { useEffect, useMemo, useState, use } from "react";
 import { useSearchParams } from "next/navigation";
-
-type Media = { kind: "image"; src: string } | { kind: "video"; src: string; poster?: string };
+import { createProgramMedia, type Media } from "@/lib/program-media";
+import { useMounted } from "@/hooks/use-mounted";
+import { BackButton } from "@/components/back-button";
 
 export default function ProgramDetailClient({ paramsPromise }: { paramsPromise: Promise<{ slug: string }> }) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const searchParams = useSearchParams();
   const purchased = searchParams.get("purchased") === "true";
   
@@ -19,15 +20,7 @@ export default function ProgramDetailClient({ paramsPromise }: { paramsPromise: 
   const program = getProgram(params.slug);
   if (!program) return notFound();
 
-  useEffect(() => setMounted(true), []);
-
-  const media: Media[] = useMemo(() => {
-    const arr: Media[] = [];
-    if (program.image) arr.push({ kind: "image", src: program.image });
-    if (program.gallery?.length) arr.push(...program.gallery.map((g) => ({ kind: "image", src: g } as Media)));
-    if (program.trailer) arr.push({ kind: "video", src: program.trailer, poster: program.image });
-    return arr;
-  }, [program.image, program.gallery, program.trailer]);
+  const media: Media[] = useMemo(() => createProgramMedia(program, false), [program]);
 
   const [idx, setIdx] = useState(0);
   useEffect(() => {
@@ -39,15 +32,7 @@ export default function ProgramDetailClient({ paramsPromise }: { paramsPromise: 
   return (
     <>
       <main className="relative mx-auto w-full max-w-2xl px-4 sm:px-6 py-4 sm:py-12 z-10">
-        <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20">
-          <Button 
-            variant="ghost" 
-            className="h-9 sm:h-10 rounded-full border border-white/10 bg-white/5 px-3 sm:px-4 text-xs sm:text-sm text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" 
-            asChild
-          >
-            <Link href="/programs">← Back</Link>
-          </Button>
-        </div>
+        <BackButton href="/programs" label="← Back" />
         
         <div className="mt-12 sm:mt-0 pt-0">
           {purchased && (

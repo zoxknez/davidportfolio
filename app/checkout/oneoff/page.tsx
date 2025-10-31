@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { getProgram } from "@/data/programs";
 import { Button } from "@/components/ui/button";
 import { notFound } from "next/navigation";
 import { checkoutFormSchema, type CheckoutFormData } from "@/lib/validations";
 import { ZodError } from "zod";
+import { useMounted } from "@/hooks/use-mounted";
+import { AnimatedBackground } from "@/components/animated-background";
+import { BackButton } from "@/components/back-button";
+import { inputStyles, buttonStyles } from "@/lib/styles";
 
 function CheckoutContent() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const [form, setForm] = useState<CheckoutFormData & { card: string }>({ 
     name: "", 
     email: "", 
@@ -25,8 +29,6 @@ function CheckoutContent() {
   
   const program = slug ? getProgram(slug) : null;
   if (!program) return notFound();
-
-  useEffect(() => setMounted(true), []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,15 +77,7 @@ function CheckoutContent() {
   return (
     <>
       <main className="relative mx-auto w-full max-w-2xl px-4 sm:px-6 py-4 sm:py-12 z-10">
-        <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20">
-          <Button 
-            variant="ghost" 
-            className="h-9 sm:h-10 rounded-full border border-white/10 bg-white/5 px-3 sm:px-4 text-xs sm:text-sm text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10" 
-            onClick={() => router.back()}
-          >
-            ← Back
-          </Button>
-        </div>
+        <BackButton label="← Back" onClick={() => router.back()} />
 
         <div className="mt-12 sm:mt-16 flex flex-col gap-6 sm:gap-8">
           <div className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
@@ -112,10 +106,8 @@ function CheckoutContent() {
                   aria-label="Name"
                   aria-invalid={!!errors.name}
                   aria-describedby={errors.name ? "checkout-name-error" : undefined}
-                  className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
-                    errors.name 
-                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
-                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                  className={`${inputStyles.base} ${
+                    errors.name ? inputStyles.error : inputStyles.default
                   }`}
                   placeholder="John Doe"
                 />
@@ -141,10 +133,8 @@ function CheckoutContent() {
                   aria-label="Email"
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? "checkout-email-error" : undefined}
-                  className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
-                    errors.email 
-                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
-                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                  className={`${inputStyles.base} ${
+                    errors.email ? inputStyles.error : inputStyles.default
                   }`}
                   placeholder="john@example.com"
                 />
@@ -172,10 +162,8 @@ function CheckoutContent() {
                   aria-label="Card Number"
                   aria-invalid={!!errors.card}
                   aria-describedby={errors.card ? "checkout-card-error" : undefined}
-                  className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
-                    errors.card 
-                      ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
-                      : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                  className={`${inputStyles.base} ${
+                    errors.card ? inputStyles.error : inputStyles.default
                   }`}
                   placeholder="1234 5678 9012 3456"
                   maxLength={19}
@@ -206,10 +194,8 @@ function CheckoutContent() {
                     aria-label="Card Expiry"
                     aria-invalid={!!errors.expiry}
                     aria-describedby={errors.expiry ? "checkout-expiry-error" : undefined}
-                    className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
-                      errors.expiry 
-                        ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
-                        : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                    className={`${inputStyles.base} ${
+                      errors.expiry ? inputStyles.error : inputStyles.default
                     }`}
                     placeholder="MM/YY"
                     maxLength={5}
@@ -236,10 +222,8 @@ function CheckoutContent() {
                     aria-label="Card CVV"
                     aria-invalid={!!errors.cvv}
                     aria-describedby={errors.cvv ? "checkout-cvv-error" : undefined}
-                    className={`w-full rounded-xl border px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition-all duration-300 backdrop-blur-sm ${
-                      errors.cvv 
-                        ? "border-red-500/50 bg-red-500/10 focus:border-red-500/70 focus:bg-red-500/15" 
-                        : "border-white/20 bg-white/5 focus:border-white/40 focus:bg-white/10"
+                    className={`${inputStyles.base} ${
+                      errors.cvv ? inputStyles.error : inputStyles.default
                     }`}
                     placeholder="123"
                     maxLength={4}
@@ -256,7 +240,7 @@ function CheckoutContent() {
                 type="submit"
                 variant="ghost"
                 disabled={isSubmitting}
-                className="mt-6 w-full h-12 rounded-full border border-white/10 bg-white/5 text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-lg hover:shadow-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`mt-6 w-full ${buttonStyles.primary} disabled:opacity-50 disabled:cursor-not-allowed`}
                 aria-label="Complete Purchase"
               >
                 {isSubmitting ? "Processing..." : "Complete Purchase"}
@@ -272,13 +256,7 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="fixed inset-0 animated-gradient" />
-      <div className="fixed inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60" />
-      
-      {/* Animated Glow Orbs */}
-      <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animated-glow" />
-      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animated-glow" style={{ animationDelay: "1.5s" }} />
+      <AnimatedBackground />
 
       <Suspense fallback={
         <main className="relative mx-auto w-full max-w-2xl px-4 sm:px-6 py-4 sm:py-12 z-10 flex items-center justify-center min-h-dvh">
