@@ -11,6 +11,7 @@ import { useMounted } from "@/hooks/use-mounted";
 import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { inputStyles, buttonStyles } from "@/lib/styles";
+import { toast } from "@/lib/toast";
 
 function CheckoutContent() {
   const mounted = useMounted();
@@ -43,13 +44,46 @@ function CheckoutContent() {
         card: cardNumber,
       });
       
-      // Demo: would process payment
-      console.log("Payment data:", validated);
+      // Send to API
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...validated,
+          programSlug: program.slug,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Handle validation, rate limit, or payment errors from API
+        if (data.details && Array.isArray(data.details)) {
+          const newErrors: Partial<Record<keyof CheckoutFormData, string>> = {};
+          data.details.forEach((err: { field: string; message: string }) => {
+            const field = err.field as keyof CheckoutFormData;
+            if (field) {
+              newErrors[field] = err.message;
+            }
+          });
+          setErrors(newErrors);
+          toast.error("Payment validation failed", "Please check your card details and try again.");
+        } else {
+          toast.error("Payment failed", data.error || "Please try again or contact support.");
+        }
+        setIsSubmitting(false);
+        return;
+      }
       
-      // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Success! Show toast and redirect
+      toast.success("Payment successful!", `You now have access to ${program.title}`);
       
-      router.push(`/programs/${program.slug}?purchased=true`);
+      // Delay redirect slightly to show toast
+      setTimeout(() => {
+        router.push(`/programs/${program.slug}?purchased=true`);
+      }, 500);
     } catch (error) {
       if (error instanceof ZodError) {
         const newErrors: Partial<Record<keyof CheckoutFormData, string>> = {};
@@ -60,8 +94,10 @@ function CheckoutContent() {
           }
         });
         setErrors(newErrors);
+        toast.error("Validation failed", "Please check your form and try again.");
       } else {
-        setErrors({ card: "An error occurred. Please try again." });
+        console.error("Checkout error:", error);
+        toast.error("Unexpected error", "An unexpected error occurred. Please try again later.");
       }
       setIsSubmitting(false);
     }

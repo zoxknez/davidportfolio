@@ -3,8 +3,24 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import Image from "next/image";
 
-// Demo videos - replace with your own hosted videos in production
-// Using publicly accessible sample videos that don't require authentication
+/**
+ * Background video sources
+ * 
+ * ⚠️ IMPORTANT: Replace these demo videos with optimized production videos
+ * 
+ * Optimization guidelines for production videos:
+ * - Max resolution: 1080p (1920x1080)
+ * - Target file size: 2-5MB per video
+ * - Codec: H.264 (best browser compatibility)
+ * - Format: MP4
+ * - Frame rate: 24-30 fps
+ * - Consider using a CDN like Cloudinary or Vercel Blob Storage
+ * 
+ * Tools for video optimization:
+ * - FFmpeg: ffmpeg -i input.mp4 -vcodec h264 -acodec aac -b:v 1M output.mp4
+ * - HandBrake: https://handbrake.fr/
+ * - Cloudinary: Automatic optimization
+ */
 const SOURCES = [
   {
     src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -32,12 +48,36 @@ export function BackgroundVideo({ opacity = 0.6, rotateMs = 8000 }: BackgroundVi
   const [index, setIndex] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isRotatingRef = useRef(false);
   const failedVideosRef = useRef<Set<number>>(new Set());
   
   const current = useMemo(() => SOURCES[index % SOURCES.length], [index]);
+
+  // Lazy loading with Intersection Observer
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect(); // Only need to trigger once
+        }
+      },
+      {
+        threshold: 0.1, // Trigger when 10% visible
+        rootMargin: "50px", // Start loading slightly before visible
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   // Check user preferences
   useEffect(() => {
@@ -167,7 +207,7 @@ export function BackgroundVideo({ opacity = 0.6, rotateMs = 8000 }: BackgroundVi
   // Show poster only if motion is reduced or video failed
   if (prefersReducedMotion || videoError) {
     return (
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+      <div ref={containerRef} className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0">
           <Image
@@ -178,7 +218,6 @@ export function BackgroundVideo({ opacity = 0.6, rotateMs = 8000 }: BackgroundVi
             priority
             quality={75}
             sizes="100vw"
-            unoptimized
           />
         </div>
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0.15))]" />
@@ -189,29 +228,50 @@ export function BackgroundVideo({ opacity = 0.6, rotateMs = 8000 }: BackgroundVi
   if (!current) return null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+    <div ref={containerRef} className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
       <div className="absolute inset-0 bg-black/50" />
-      <video
-        ref={videoRef}
-        key={current.src}
-        className="h-full w-full object-cover transition-opacity duration-700"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster={current.poster}
-        preload="auto"
-        onError={handleVideoError}
-        onLoadedData={(e) => {
-          const video = e.currentTarget;
-          if (video.paused) {
-            video.play().catch(() => handleVideoError());
-          }
-        }}
-        style={{ opacity }}
-      >
-        <source src={current.src} type="video/mp4" />
-      </video>
+      {/* Only load video when in view (lazy loading) */}
+      {isInView ? (
+        <video
+          ref={videoRef}
+          key={current.src}
+          className="h-full w-full object-cover transition-opacity duration-700"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={current.poster}
+          preload="metadata" // Changed from "auto" - only load metadata initially
+          onError={handleVideoError}
+          onLoadedData={(e) => {
+            const video = e.currentTarget;
+            if (video.paused) {
+              video.play().catch(() => handleVideoError());
+            }
+          }}
+          style={{ opacity }}
+          // Performance optimizations
+          x-webkit-airplay="deny" // Prevent AirPlay
+          disablePictureInPicture
+        >
+          <source src={current.src} type="video/mp4" />
+          {/* Fallback message for browsers that don't support video */}
+          <p>Your browser does not support the video tag.</p>
+        </video>
+      ) : (
+        // Show poster while video is loading
+        <div className="absolute inset-0">
+          <Image
+            src={current.poster}
+            alt=""
+            fill
+            className="object-cover"
+            priority
+            quality={75}
+            sizes="100vw"
+          />
+        </div>
+      )}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0.15))]" />
     </div>
   );

@@ -9,13 +9,13 @@ import { useMounted } from "@/hooks/use-mounted";
 import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { inputStyles, buttonStyles } from "@/lib/styles";
+import { toast } from "@/lib/toast";
 
 export default function ContactPage() {
   const mounted = useMounted();
   const [form, setForm] = useState<ContactFormData>({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const contactInfo = [
     {
@@ -102,17 +102,42 @@ export default function ContactPage() {
                 e.preventDefault();
                 setIsSubmitting(true);
                 setErrors({});
-                setSubmitSuccess(false);
 
                 try {
+                  // Validate form data on client side first
                   const validated = contactFormSchema.parse(form);
-                  // Here you would send to your API
-                  console.log("Form data:", validated);
                   
-                  // Simulate API call
-                  await new Promise(resolve => setTimeout(resolve, 1000));
+                  // Send to API with loading toast
+                  const response = await fetch("/api/contact", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(validated),
+                  });
+
+                  const data = await response.json();
+
+                  if (!response.ok) {
+                    // Handle validation or rate limit errors from API
+                    if (data.details && Array.isArray(data.details)) {
+                      const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
+                      data.details.forEach((err: { field: string; message: string }) => {
+                        const field = err.field as keyof ContactFormData;
+                        if (field) {
+                          newErrors[field] = err.message;
+                        }
+                      });
+                      setErrors(newErrors);
+                      toast.error("Validation failed", "Please check your form and try again.");
+                    } else {
+                      toast.error("Failed to send message", data.error || "Please try again later.");
+                    }
+                    return;
+                  }
                   
-                  setSubmitSuccess(true);
+                  // Success!
+                  toast.success("Message sent!", "Thank you for contacting us. We'll get back to you soon.");
                   setForm({ name: "", email: "", message: "" });
                 } catch (error) {
                   if (error instanceof ZodError) {
@@ -124,8 +149,10 @@ export default function ContactPage() {
                       }
                     });
                     setErrors(newErrors);
+                    toast.error("Validation failed", "Please check your form and try again.");
                   } else {
-                    setErrors({ message: "An error occurred. Please try again." });
+                    console.error("Contact form error:", error);
+                    toast.error("Unexpected error", "An unexpected error occurred. Please try again later.");
                   }
                 } finally {
                   setIsSubmitting(false);
@@ -133,12 +160,6 @@ export default function ContactPage() {
               }} 
               className="grid gap-5"
             >
-              {submitSuccess && (
-                <div className="rounded-xl border border-green-500/30 bg-green-500/10 backdrop-blur-sm p-4">
-                  <p className="text-sm text-green-400 font-medium">✓ Message sent successfully!</p>
-                </div>
-              )}
-              
               <div className="space-y-2">
                 <label htmlFor="contact-name" className="block text-sm font-medium text-white/80">
                   Name
