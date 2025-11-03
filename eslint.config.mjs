@@ -10,6 +10,9 @@ const eslintConfig = defineConfig([
       "node_modules/**",
       "vitest.config.ts",
       "vitest.setup.ts",
+      "**/__tests__/**",
+      "**/*.test.ts",
+      "**/*.test.tsx",
     ],
   },
   {
@@ -18,15 +21,6 @@ const eslintConfig = defineConfig([
       "@next/next/no-css-tags": "off",
       // Ignore Tailwind CSS class suggestions
       "tailwindcss/classnames-order": "off",
-      // Allow unused vars in some cases
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-          caughtErrorsIgnorePattern: "^_",
-        },
-      ],
     },
   },
 ]);
