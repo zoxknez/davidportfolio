@@ -3,8 +3,6 @@
  * Provides type safety and autocompletion across the codebase
  */
 
-import { PROGRAM_LEVELS } from "@/lib/constants";
-
 // =============================================================================
 // PROGRAM TYPES
 // =============================================================================

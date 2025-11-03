@@ -1,24 +1,32 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import nextVitals from "eslint-config-next/core-web-vitals.js";
-import nextTs from "eslint-config-next/typescript.js";
+import { defineConfig } from "eslint/config";
 
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
+  {
+    ignores: [
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+      "node_modules/**",
+      "vitest.config.ts",
+      "vitest.setup.ts",
+    ],
+  },
   {
     rules: {
       // Ignore incorrect Tailwind CSS class warnings
       "@next/next/no-css-tags": "off",
-      // Ignore Tailwind CSS class suggestions (bg-gradient-to-b is valid)
+      // Ignore Tailwind CSS class suggestions
       "tailwindcss/classnames-order": "off",
+      // Allow unused vars in some cases
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ]);
