@@ -24,7 +24,7 @@ export function ScrollReveal({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry && entry.isIntersecting) {
             setIsVisible(true);
             // Optionally disconnect after first view
             observer.disconnect();

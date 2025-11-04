@@ -28,7 +28,8 @@ export function AnimatedCounter({
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !hasStarted) {
+        const entry = entries[0];
+        if (entry && entry.isIntersecting && !hasStarted) {
           setHasStarted(true);
         }
       },
