@@ -46,35 +46,35 @@ export default function QuizPage() {
               <legend className="text-center text-lg font-semibold text-white w-full mb-6">What is your primary goal?</legend>
               <div className="flex flex-col gap-4">
                 {[
-                  ["fat-loss", "Fat Loss", Flame, "Burn fat and get lean"],
-                  ["muscle", "Build Muscle", Dumbbell, "Gain strength and size"],
-                  ["performance", "Performance", Zap, "Boost athletic ability"],
-                ].map(([val, label, Icon, desc], index) => (
-                  <div key={val} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                  { val: "fat-loss", label: "Fat Loss", Icon: Flame, desc: "Burn fat and get lean" },
+                  { val: "muscle", label: "Build Muscle", Icon: Dumbbell, desc: "Gain strength and size" },
+                  { val: "performance", label: "Performance", Icon: Zap, desc: "Boost athletic ability" },
+                ].map((option, index) => (
+                  <div key={option.val} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                     <input
                       type="radio"
-                      id={`goal-${val}`}
+                      id={`goal-${option.val}`}
                       name="goal"
-                      value={val}
-                      checked={goal === val}
-                      onChange={() => setGoal(val as string)}
+                      value={option.val}
+                      checked={goal === option.val}
+                      onChange={() => setGoal(option.val)}
                       className="sr-only peer"
                     />
                     <label
-                      htmlFor={`goal-${val}`}
+                      htmlFor={`goal-${option.val}`}
                       className={`group relative block cursor-pointer rounded-2xl border px-6 py-5 transition-all duration-300 backdrop-blur-sm peer-focus:ring-2 peer-focus:ring-white/40 peer-focus:ring-offset-2 peer-focus:ring-offset-black hover:-translate-y-1 ${
-                        goal === val 
+                        goal === option.val 
                           ? "border-white/40 bg-white/10 text-white shadow-2xl shadow-white/10 scale-105" 
                           : "border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-xl hover:shadow-white/5"
                       }`}
                     >
                       <div className="flex items-start gap-4">
-                        <div className={`rounded-xl p-3 transition-all duration-300 ${goal === val ? 'bg-white/20 border border-white/30' : 'bg-white/10 border border-white/20 group-hover:bg-white/15'}`}>
-                          <Icon className="h-6 w-6" />
+                        <div className={`rounded-xl p-3 transition-all duration-300 ${goal === option.val ? 'bg-white/20 border border-white/30' : 'bg-white/10 border border-white/20 group-hover:bg-white/15'}`}>
+                          <option.Icon className="h-6 w-6" />
                         </div>
                         <div className="flex-1 text-left">
-                          <div className="font-semibold text-base mb-1">{label}</div>
-                          <div className="text-xs text-white/60 group-hover:text-white/70 transition-colors">{desc}</div>
+                          <div className="font-semibold text-base mb-1">{option.label}</div>
+                          <div className="text-xs text-white/60 group-hover:text-white/70 transition-colors">{option.desc}</div>
                         </div>
                       </div>
                     </label>
