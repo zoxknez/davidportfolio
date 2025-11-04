@@ -7,6 +7,7 @@ import { useMounted } from "@/hooks/use-mounted";
 import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { buttonStyles } from "@/lib/styles";
+import { Flame, Dumbbell, Zap, Calendar, User, Sparkles } from "lucide-react";
 
 type Step = 0 | 1 | 2;
 
@@ -24,26 +25,32 @@ export default function QuizPage() {
       <main className="relative mx-auto flex min-h-dvh w-full max-w-xl flex-col items-center justify-center gap-6 sm:gap-8 px-4 sm:px-6 py-16 sm:py-12 z-10">
         <BackButton />
         
-        <div className={`flex w-full max-w-md flex-col items-center gap-4 sm:gap-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-center">Find your program</h1>
+        <div className={`flex w-full max-w-md flex-col items-center gap-4 sm:gap-6 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl">
+            <Sparkles className="h-4 w-4 text-white/80 animate-pulse" />
+            <span className="text-xs sm:text-sm font-medium text-white/90">Personalized Recommendation</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
+            Find Your Perfect Program
+          </h1>
           <QuizProgress current={step + 1} total={3} />
         </div>
 
         {step === 0 && (
           <form 
-            className={`flex w-full max-w-md flex-col gap-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}
+            className={`flex w-full max-w-md flex-col gap-6 transition-all duration-500 animate-scale-in ${mounted ? "opacity-100" : "opacity-0"}`}
             onSubmit={(e) => { e.preventDefault(); setStep(1); }}
             aria-label="Step 1 of 3: Select your fitness goal"
           >
             <fieldset className="border-0 p-0">
-              <legend className="text-center text-sm text-white/70 w-full mb-4">What is your primary goal?</legend>
-              <div className="flex flex-col gap-3">
+              <legend className="text-center text-lg font-semibold text-white w-full mb-6">What is your primary goal?</legend>
+              <div className="flex flex-col gap-4">
                 {[
-                  ["fat-loss", "Fat Loss"],
-                  ["muscle", "Build Muscle"],
-                  ["performance", "Performance"],
-                ].map(([val, label]) => (
-                  <div key={val}>
+                  ["fat-loss", "Fat Loss", Flame, "Burn fat and get lean"],
+                  ["muscle", "Build Muscle", Dumbbell, "Gain strength and size"],
+                  ["performance", "Performance", Zap, "Boost athletic ability"],
+                ].map(([val, label, Icon, desc], index) => (
+                  <div key={val} className="animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                     <input
                       type="radio"
                       id={`goal-${val}`}
@@ -55,13 +62,21 @@ export default function QuizPage() {
                     />
                     <label
                       htmlFor={`goal-${val}`}
-                      className={`block cursor-pointer rounded-full border px-6 py-4 text-sm font-medium text-center transition-all duration-300 backdrop-blur-sm peer-focus:ring-2 peer-focus:ring-white/40 peer-focus:ring-offset-2 peer-focus:ring-offset-black ${
+                      className={`group relative block cursor-pointer rounded-2xl border px-6 py-5 transition-all duration-300 backdrop-blur-sm peer-focus:ring-2 peer-focus:ring-white/40 peer-focus:ring-offset-2 peer-focus:ring-offset-black hover:-translate-y-1 ${
                         goal === val 
-                          ? "border-white/40 bg-white/10 text-white shadow-lg shadow-white/10" 
-                          : "border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                          ? "border-white/40 bg-white/10 text-white shadow-2xl shadow-white/10 scale-105" 
+                          : "border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-xl hover:shadow-white/5"
                       }`}
                     >
-                      {label}
+                      <div className="flex items-start gap-4">
+                        <div className={`rounded-xl p-3 transition-all duration-300 ${goal === val ? 'bg-white/20 border border-white/30' : 'bg-white/10 border border-white/20 group-hover:bg-white/15'}`}>
+                          <Icon className="h-6 w-6" />
+                        </div>
+                        <div className="flex-1 text-left">
+                          <div className="font-semibold text-base mb-1">{label}</div>
+                          <div className="text-xs text-white/60 group-hover:text-white/70 transition-colors">{desc}</div>
+                        </div>
+                      </div>
                     </label>
                   </div>
                 ))}
@@ -71,10 +86,11 @@ export default function QuizPage() {
               <Button 
                 type="submit"
                 variant="ghost" 
-                className={buttonStyles.secondary}
+                className={`${buttonStyles.secondary} group`}
                 aria-label="Continue to step 2"
               >
-                Next →
+                Next
+                <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
               </Button>
             </div>
           </form>
@@ -82,15 +98,15 @@ export default function QuizPage() {
 
         {step === 1 && (
           <form 
-            className={`flex w-full max-w-md flex-col gap-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}
+            className={`flex w-full max-w-md flex-col gap-6 transition-all duration-500 animate-scale-in ${mounted ? "opacity-100" : "opacity-0"}`}
             onSubmit={(e) => { e.preventDefault(); setStep(2); }}
             aria-label="Step 2 of 3: Select training days per week"
           >
             <fieldset className="border-0 p-0">
-              <legend className="text-center text-sm text-white/70 w-full mb-4">How many days per week can you train?</legend>
+              <legend className="text-center text-lg font-semibold text-white w-full mb-6">How many days per week can you train?</legend>
               <div className="flex flex-wrap justify-center gap-3">
-                {[2, 3, 4, 5, 6].map((d) => (
-                  <div key={d}>
+                {[2, 3, 4, 5, 6].map((d, index) => (
+                  <div key={d} className="animate-scale-in" style={{ animationDelay: `${index * 0.05}s` }}>
                     <input
                       type="radio"
                       id={`days-${d}`}
@@ -102,13 +118,15 @@ export default function QuizPage() {
                     />
                     <label
                       htmlFor={`days-${d}`}
-                      className={`block cursor-pointer rounded-full border px-6 py-3 text-sm font-medium transition-all duration-300 backdrop-blur-sm peer-focus:ring-2 peer-focus:ring-white/40 peer-focus:ring-offset-2 peer-focus:ring-offset-black ${
+                      className={`group relative flex flex-col items-center justify-center cursor-pointer rounded-2xl border px-6 py-5 text-sm font-semibold transition-all duration-300 backdrop-blur-sm peer-focus:ring-2 peer-focus:ring-white/40 peer-focus:ring-offset-2 peer-focus:ring-offset-black hover:-translate-y-1 min-w-[80px] ${
                         days === d 
-                          ? "border-white/40 bg-white/10 text-white shadow-lg shadow-white/10" 
-                          : "border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                          ? "border-white/40 bg-white/10 text-white shadow-2xl shadow-white/10 scale-105" 
+                          : "border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-xl hover:shadow-white/5"
                       }`}
                     >
-                      {d}
+                      <Calendar className="h-6 w-6 mb-2" />
+                      <span className="text-2xl font-bold">{d}</span>
+                      <span className="text-xs text-white/60 mt-1">days</span>
                     </label>
                   </div>
                 ))}
@@ -118,19 +136,21 @@ export default function QuizPage() {
               <Button 
                 type="button"
                 variant="ghost" 
-                className={buttonStyles.secondary}
+                className={`${buttonStyles.secondary} group`}
                 onClick={() => setStep(0)}
                 aria-label="Go back to step 1"
               >
-                ← Back
+                <span className="inline-block transition-transform group-hover:-translate-x-1">←</span>
+                Back
               </Button>
               <Button 
                 type="submit"
                 variant="ghost" 
-                className={buttonStyles.secondary}
+                className={`${buttonStyles.secondary} group`}
                 aria-label="Continue to step 3"
               >
-                Next →
+                Next
+                <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
               </Button>
             </div>
           </form>
@@ -138,7 +158,7 @@ export default function QuizPage() {
 
         {step === 2 && (
           <form 
-            className={`flex w-full max-w-md flex-col gap-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}
+            className={`flex w-full max-w-md flex-col gap-6 transition-all duration-500 animate-scale-in ${mounted ? "opacity-100" : "opacity-0"}`}
             onSubmit={(e) => { 
               e.preventDefault(); 
               window.location.href = `/recommendation?goal=${goal}&days=${days}&sex=${sex}`;
@@ -146,13 +166,13 @@ export default function QuizPage() {
             aria-label="Step 3 of 3: Select your sex"
           >
             <fieldset className="border-0 p-0">
-              <legend className="text-center text-sm text-white/70 w-full mb-4">Sex</legend>
-              <div className="flex gap-3">
+              <legend className="text-center text-lg font-semibold text-white w-full mb-6">Select your profile</legend>
+              <div className="flex gap-4">
                 {[
                   ["male", "Male"],
                   ["female", "Female"],
-                ].map(([val, label]) => (
-                  <div key={val} className="flex-1">
+                ].map(([val, label], index) => (
+                  <div key={val} className="flex-1 animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
                     <input
                       type="radio"
                       id={`sex-${val}`}
@@ -164,13 +184,14 @@ export default function QuizPage() {
                     />
                     <label
                       htmlFor={`sex-${val}`}
-                      className={`block cursor-pointer rounded-full border px-6 py-4 text-sm font-medium text-center transition-all duration-300 backdrop-blur-sm peer-focus:ring-2 peer-focus:ring-white/40 peer-focus:ring-offset-2 peer-focus:ring-offset-black ${
+                      className={`group relative flex flex-col items-center justify-center cursor-pointer rounded-2xl border px-6 py-6 text-sm font-medium text-center transition-all duration-300 backdrop-blur-sm peer-focus:ring-2 peer-focus:ring-white/40 peer-focus:ring-offset-2 peer-focus:ring-offset-black hover:-translate-y-1 ${
                         sex === val 
-                          ? "border-white/40 bg-white/10 text-white shadow-lg shadow-white/10" 
-                          : "border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                          ? "border-white/40 bg-white/10 text-white shadow-2xl shadow-white/10 scale-105" 
+                          : "border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10 hover:text-white hover:shadow-xl hover:shadow-white/5"
                       }`}
                     >
-                      {label}
+                      <User className="h-8 w-8 mb-3" />
+                      <span className="font-semibold text-base">{label}</span>
                     </label>
                   </div>
                 ))}
@@ -180,19 +201,22 @@ export default function QuizPage() {
               <Button 
                 type="button"
                 variant="ghost" 
-                className={buttonStyles.secondary}
+                className={`${buttonStyles.secondary} group`}
                 onClick={() => setStep(1)}
                 aria-label="Go back to step 2"
               >
-                ← Back
+                <span className="inline-block transition-transform group-hover:-translate-x-1">←</span>
+                Back
               </Button>
               <Button 
                 type="submit"
                 variant="ghost" 
-                className={buttonStyles.secondary}
+                className={`${buttonStyles.secondary} group bg-white/15 hover:bg-white/25 border-white/30`}
                 aria-label="View your personalized recommendation"
               >
-                See Recommendation →
+                <Sparkles className="h-4 w-4 mr-2" />
+                Get My Program
+                <span className="inline-block transition-transform group-hover:translate-x-1 ml-1">→</span>
               </Button>
             </div>
           </form>
