@@ -1,7 +1,8 @@
 "use client";
 
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Sparkles, BookOpen, TrendingUp } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 
@@ -71,50 +72,120 @@ export default function NewsPage() {
       <main className="relative mx-auto w-full max-w-4xl px-4 sm:px-6 py-4 sm:py-12 z-10">
         <BackButton />
 
-        <div className="mt-12 sm:mt-16 md:mt-20 pt-0">
-          <h1 className={`text-2xl sm:text-3xl md:text-4xl font-semibold text-white transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
-            News & Articles
-          </h1>
-          <p className={`mt-2 text-xs sm:text-sm text-white/70 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.1s" }}>
-            Training insights, science-backed strategies, and coaching wisdom.
-          </p>
-        </div>
+        {/* Header */}
+        <div className="mt-12 sm:mt-16 md:mt-20 mb-12 pt-0">
+          <div className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
+              <Sparkles className="h-4 w-4 text-white/80" />
+              <span className="text-xs sm:text-sm font-medium text-white/90">
+                Latest Insights & Knowledge
+              </span>
+            </div>
 
-        {/* News Grid */}
-        <div className={`mt-8 grid grid-cols-1 gap-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.15s" }}>
-          {newsItems.map((item) => (
-            <article
-              key={item.id}
-              className="group rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 sm:p-6 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-lg hover:shadow-white/10"
-            >
-              <div className="flex items-start justify-between gap-4 mb-3">
-                <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-medium uppercase tracking-wide text-white/80 backdrop-blur-sm">
-                  {item.category}
-                </span>
-                <div className="flex items-center gap-3 text-xs text-white/60">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="h-3 w-3" />
-                    <span>{formatDate(item.date)}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    <span>{item.readTime}</span>
-                  </div>
+            <div className="flex flex-col sm:flex-row items-start justify-between gap-4 mb-6">
+              <div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3">
+                  News & Articles
+                </h1>
+                <p className="text-base sm:text-lg text-white/70 max-w-2xl">
+                  Training insights, science-backed strategies, and coaching wisdom to help you on your fitness journey.
+                </p>
+              </div>
+
+              {/* Stats */}
+              <div className="flex gap-3">
+                <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-3 text-center">
+                  <BookOpen className="h-5 w-5 text-white/70 mx-auto mb-1" />
+                  <div className="text-xs text-white/60">{newsItems.length} articles</div>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-3 text-center">
+                  <TrendingUp className="h-5 w-5 text-white/70 mx-auto mb-1" />
+                  <div className="text-xs text-white/60">Popular</div>
                 </div>
               </div>
-              <h2 className="text-lg sm:text-xl font-semibold text-white mb-2 group-hover:text-white transition-colors">
-                {item.title}
-              </h2>
-              <p className="text-sm text-white/70 mb-4 line-clamp-2">
-                {item.excerpt}
-              </p>
-              <button className="flex items-center gap-2 text-sm text-white/80 group-hover:text-white transition-colors">
-                <span>Read more</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </button>
-            </article>
+            </div>
+
+            {/* Categories filter - static for now */}
+            <div className="flex flex-wrap gap-2">
+              {Array.from(new Set(newsItems.map(item => item.category))).map((category) => (
+                <button
+                  key={category}
+                  className="px-3 py-1.5 text-xs font-medium rounded-full border border-white/20 bg-white/10 text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:bg-white/20 hover:text-white"
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* News Grid with Scroll Reveal */}
+        <div className="grid grid-cols-1 gap-6 pb-12">
+          {newsItems.map((item, index) => (
+            <ScrollReveal key={item.id} delay={index * 0.05} direction="up">
+              <article className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-1">
+                {/* Glow effect */}
+                <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 opacity-0 group-hover:opacity-100 blur transition-opacity duration-500 -z-10" />
+                
+                {/* Gradient overlay on hover */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-4 mb-4">
+                    <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[10px] font-medium uppercase tracking-wide text-white/80 backdrop-blur-sm transition-all duration-300 group-hover:border-white/30 group-hover:bg-white/20">
+                      {item.category}
+                    </span>
+                    <div className="flex items-center gap-3 text-xs text-white/60">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="h-3.5 w-3.5" />
+                        <span>{formatDate(item.date)}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="h-3.5 w-3.5" />
+                        <span>{item.readTime}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 transition-colors duration-300 group-hover:text-white">
+                    {item.title}
+                  </h2>
+                  
+                  <p className="text-sm sm:text-base text-white/70 mb-5 line-clamp-2 transition-colors duration-300 group-hover:text-white/80">
+                    {item.excerpt}
+                  </p>
+                  
+                  <button className="inline-flex items-center gap-2 text-sm font-medium text-white/80 transition-all duration-300 group-hover:text-white group-hover:gap-3">
+                    <span>Read full article</span>
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </button>
+                </div>
+              </article>
+            </ScrollReveal>
           ))}
         </div>
+
+        {/* Newsletter CTA */}
+        <ScrollReveal>
+          <div className="mt-8 mb-12">
+            <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 text-center">
+              <BookOpen className="h-12 w-12 text-white/80 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-white mb-3">
+                Stay Updated
+              </h2>
+              <p className="text-white/70 mb-6 max-w-md mx-auto">
+                Get the latest training tips, nutrition advice, and exclusive content delivered to your inbox.
+              </p>
+              <a
+                href="/contact"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/10 text-white font-medium backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:bg-white/20 hover:shadow-lg hover:shadow-white/10"
+              >
+                Subscribe to Newsletter
+              </a>
+            </div>
+          </div>
+        </ScrollReveal>
       </main>
     </div>
   );

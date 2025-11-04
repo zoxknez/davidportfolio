@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Play, ImageIcon } from "lucide-react";
+import { Play, ImageIcon, Sparkles, Film, Camera } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 
@@ -67,59 +68,113 @@ export default function MediaPage() {
         <main className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 py-4 sm:py-12 z-10">
           <BackButton />
 
-          <div className="mt-12 sm:mt-16 md:mt-20 pt-0">
-            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-semibold text-white transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
-              Media
-            </h1>
-            <p className={`mt-2 text-xs sm:text-sm text-white/70 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.1s" }}>
-              Training videos, workout photos, and movement demonstrations.
-            </p>
+          {/* Header */}
+          <div className="mt-12 sm:mt-16 md:mt-20 mb-12 pt-0">
+            <div className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
+                <Sparkles className="h-4 w-4 text-white/80" />
+                <span className="text-xs sm:text-sm font-medium text-white/90">
+                  Training Content & Demonstrations
+                </span>
+              </div>
+
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div>
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3">
+                    Media Gallery
+                  </h1>
+                  <p className="text-base sm:text-lg text-white/70 max-w-2xl">
+                    Browse through training videos, workout photos, and movement demonstrations. 
+                    Click any item to view in full screen.
+                  </p>
+                </div>
+
+                {/* Stats */}
+                <div className="hidden md:flex gap-4">
+                  <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-3 text-center">
+                    <Film className="h-5 w-5 text-white/70 mx-auto mb-1" />
+                    <div className="text-xs text-white/60">
+                      {mediaItems.filter(i => i.type === "video").length} videos
+                    </div>
+                  </div>
+                  <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-3 text-center">
+                    <Camera className="h-5 w-5 text-white/70 mx-auto mb-1" />
+                    <div className="text-xs text-white/60">
+                      {mediaItems.filter(i => i.type === "image").length} photos
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Media Grid */}
-          <div className={`mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.15s" }}>
+          {/* Media Grid with Scroll Reveal */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 pb-12">
             {mediaItems.map((item, idx) => (
-              <button
-                key={idx}
-                onClick={() => setSelectedMedia(item)}
-                className="group relative aspect-video w-full overflow-hidden rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-lg hover:shadow-white/10"
-              >
-                {item.type === "video" ? (
-                  <video
-                    className="h-full w-full object-cover"
-                    muted
-                    playsInline
-                    loop
-                    onMouseEnter={(e) => e.currentTarget.play()}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.pause();
-                      e.currentTarget.currentTime = 0;
-                    }}
-                  >
-                    <source src={item.src} type="video/mp4" />
-                  </video>
-                ) : (
-                  <Image 
-                    src={item.src} 
-                    alt={item.title} 
-                    fill 
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    loading="lazy"
-                  />
-                )}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <ScrollReveal key={idx} delay={idx * 0.05} direction="up">
+                <button
+                  onClick={() => setSelectedMedia(item)}
+                  className="group relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-2"
+                >
+                  {/* Glow effect */}
+                  <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 opacity-0 group-hover:opacity-100 blur transition-opacity duration-500 -z-10" />
+                  
                   {item.type === "video" ? (
-                    <Play className="h-12 w-12 text-white/90" fill="currentColor" />
+                    <video
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      muted
+                      playsInline
+                      loop
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.pause();
+                        e.currentTarget.currentTime = 0;
+                      }}
+                    >
+                      <source src={item.src} type="video/mp4" />
+                    </video>
                   ) : (
-                    <ImageIcon className="h-12 w-12 text-white/90" />
+                    <Image 
+                      src={item.src} 
+                      alt={item.title} 
+                      fill 
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      loading="lazy"
+                    />
                   )}
-                </div>
-                <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className="text-sm font-medium text-white">{item.title}</p>
-                </div>
-              </button>
+                  
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent transition-opacity duration-500 group-hover:from-black/90" />
+                  
+                  {/* Shimmer effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                  </div>
+                  
+                  {/* Play/View icon */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <div className="rounded-full bg-white/20 backdrop-blur-sm p-4 border border-white/30 transition-transform duration-300 group-hover:scale-110">
+                      {item.type === "video" ? (
+                        <Play className="h-8 w-8 text-white" fill="currentColor" />
+                      ) : (
+                        <ImageIcon className="h-8 w-8 text-white" />
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="absolute inset-x-0 bottom-0 p-5 transform transition-all duration-300">
+                    <p className="text-sm font-semibold text-white transition-all duration-300 group-hover:text-base">
+                      {item.title}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-xs text-white/70 px-2 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm">
+                        {item.type === "video" ? "Video" : "Photo"}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              </ScrollReveal>
             ))}
           </div>
         </main>
