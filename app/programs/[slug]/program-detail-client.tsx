@@ -11,7 +11,7 @@ import { createProgramMedia, type Media } from "@/lib/program-media";
 import { useMounted } from "@/hooks/use-mounted";
 import { BackButton } from "@/components/back-button";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { CheckCircle2, Sparkles, Award, Calendar, Dumbbell, ShoppingCart, Clock, TrendingUp } from "lucide-react";
+import { CheckCircle2, Award, Calendar, Dumbbell, ShoppingCart, Clock, TrendingUp, ArrowRight } from "lucide-react";
 
 export default function ProgramDetailClient({ paramsPromise }: { paramsPromise: Promise<{ slug: string }> }) {
   const mounted = useMounted();
