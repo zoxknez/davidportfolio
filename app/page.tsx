@@ -1,5 +1,4 @@
 import { Hero } from "@/components/hero";
-import { BackgroundVideo } from "@/components/background-video";
 import { StatsSection } from "@/components/stats-section";
 import { FeaturesSection } from "@/components/features-section";
 import { Testimonials } from "@/components/testimonials";
@@ -42,9 +41,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-dvh font-sans text-zinc-900 dark:text-zinc-50">
-      <BackgroundVideo />
-      
+    <div className="min-h-dvh font-sans text-zinc-900 dark:text-zinc-50 bg-black">
       {/* Hero Section */}
       <div className="relative">
         <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col items-center justify-center gap-8 px-6 py-12">
