@@ -1,5 +1,3 @@
-"use client";
-
 import { AnimatedCounter } from "./animated-counter";
 import { ScrollReveal } from "./scroll-reveal";
 

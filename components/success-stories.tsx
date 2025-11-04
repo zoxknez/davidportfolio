@@ -1,5 +1,3 @@
-"use client";
-
 import { ScrollReveal } from "./scroll-reveal";
 import { TrendingUp, Award, Zap, type LucideIcon } from "lucide-react";
 
