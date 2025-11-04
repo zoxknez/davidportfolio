@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState, useRef } from "react";
-import Image from "next/image";
 
 /**
  * Background video sources
@@ -23,19 +22,19 @@ import Image from "next/image";
  */
 const SOURCES = [
   {
-    // High-energy gym workout - strength training
-    src: "https://videos.pexels.com/video-files/4164759/4164759-uhd_2560_1440_25fps.mp4",
-    poster: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920&auto=format&fit=crop",
+    // Gym workout - strength training (Coverr - allows hotlinking)
+    src: "https://cdn.coverr.co/videos/coverr-athletes-exercising-3265/1080p.mp4",
+    poster: "",
   },
   {
-    // Athletic training - functional movements
-    src: "https://videos.pexels.com/video-files/4838267/4838267-uhd_2560_1440_25fps.mp4",
-    poster: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1920&auto=format&fit=crop",
+    // Running/cardio workout (Coverr - allows hotlinking)
+    src: "https://cdn.coverr.co/videos/coverr-running-at-the-stadium-9164/1080p.mp4",
+    poster: "",
   },
   {
-    // Focused training - determination
-    src: "https://videos.pexels.com/video-files/4752861/4752861-uhd_2560_1440_25fps.mp4",
-    poster: "https://images.unsplash.com/photo-1583454110551-21f2fa2f276d?q=80&w=1920&auto=format&fit=crop",
+    // Home workout/training (Coverr - allows hotlinking)
+    src: "https://cdn.coverr.co/videos/coverr-girl-exercising-in-the-living-room-5396/1080p.mp4",
+    poster: "",
   },
 ] as const;
 
@@ -204,22 +203,11 @@ export function BackgroundVideo({ opacity = 0.6, rotateMs = 8000 }: BackgroundVi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, prefersReducedMotion, videoError]);
 
-  // Show poster only if motion is reduced or video failed
+  // Show solid background if motion is reduced or video failed
   if (prefersReducedMotion || videoError) {
     return (
       <div ref={containerRef} className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0">
-          <Image
-            src={current?.poster || ""}
-            alt=""
-            fill
-            className="object-cover"
-            priority
-            quality={75}
-            sizes="100vw"
-          />
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0.15))]" />
       </div>
     );
@@ -240,7 +228,6 @@ export function BackgroundVideo({ opacity = 0.6, rotateMs = 8000 }: BackgroundVi
           muted
           loop
           playsInline
-          poster={current.poster}
           preload="metadata" // Changed from "auto" - only load metadata initially
           onError={handleVideoError}
           onLoadedData={(e) => {
@@ -259,18 +246,8 @@ export function BackgroundVideo({ opacity = 0.6, rotateMs = 8000 }: BackgroundVi
           <p>Your browser does not support the video tag.</p>
         </video>
       ) : (
-        // Show poster while video is loading
-        <div className="absolute inset-0">
-          <Image
-            src={current.poster}
-            alt=""
-            fill
-            className="object-cover"
-            priority
-            quality={75}
-            sizes="100vw"
-          />
-        </div>
+        // Show gradient background while video is loading
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-zinc-900 to-black" />
       )}
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0.15))]" />
     </div>
