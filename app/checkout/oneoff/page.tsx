@@ -12,7 +12,7 @@ import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { inputStyles } from "@/lib/styles";
 import { toast } from "@/lib/toast";
-import { ShoppingCart, Lock, CreditCard, Sparkles, CheckCircle2 } from "lucide-react";
+import { ShoppingCart, Lock, CreditCard, CheckCircle2 } from "lucide-react";
 
 function CheckoutContent() {
   const mounted = useMounted();
