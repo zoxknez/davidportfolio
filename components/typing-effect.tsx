@@ -25,6 +25,10 @@ export function TypingEffect({
   useEffect(() => {
     const currentPhrase = phrases[currentPhraseIndex];
     
+    if (!currentPhrase) {
+      return;
+    }
+    
     if (isPaused) {
       const pauseTimeout = setTimeout(() => {
         setIsPaused(false);
