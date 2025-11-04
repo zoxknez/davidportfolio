@@ -1,7 +1,7 @@
 "use client";
 
 import { ScrollReveal } from "./scroll-reveal";
-import { TrendingUp, Award, Zap } from "lucide-react";
+import { TrendingUp, Award, Zap, type LucideIcon } from "lucide-react";
 
 interface SuccessStory {
   name: string;
@@ -26,7 +26,7 @@ export function SuccessStories({
   title = "Success Stories",
   subtitle = "Real results from real people",
 }: SuccessStoriesProps) {
-  const icons = [TrendingUp, Award, Zap];
+  const icons: LucideIcon[] = [TrendingUp, Award, Zap];
 
   return (
     <div className="w-full">
