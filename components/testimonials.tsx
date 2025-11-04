@@ -48,6 +48,10 @@ export function Testimonials({
 
   const currentTestimonial = testimonials[currentIndex];
 
+  if (!currentTestimonial) {
+    return null;
+  }
+
   return (
     <div className="relative w-full">
       {/* Main testimonial card */}
