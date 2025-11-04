@@ -23,19 +23,19 @@ import Image from "next/image";
  */
 const SOURCES = [
   {
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920&auto=format&fit=crop",
+    // High-energy gym workout - strength training
+    src: "https://videos.pexels.com/video-files/4164759/4164759-uhd_2560_1440_25fps.mp4",
+    poster: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920&auto=format&fit=crop",
   },
   {
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1920&auto=format&fit=crop",
+    // Athletic training - functional movements
+    src: "https://videos.pexels.com/video-files/4838267/4838267-uhd_2560_1440_25fps.mp4",
+    poster: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1920&auto=format&fit=crop",
   },
   {
-    src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-    poster:
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2f276d?q=80&w=1920&auto=format&fit=crop",
+    // Focused training - determination
+    src: "https://videos.pexels.com/video-files/4752861/4752861-uhd_2560_1440_25fps.mp4",
+    poster: "https://images.unsplash.com/photo-1583454110551-21f2fa2f276d?q=80&w=1920&auto=format&fit=crop",
   },
 ] as const;
 
