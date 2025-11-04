@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Mail, Globe, Instagram, Facebook, MessageSquare } from "lucide-react";
+import { Mail, Globe, Instagram, Facebook, MessageSquare, ArrowRight } from "lucide-react";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 import { ZodError } from "zod";
 import { useMounted } from "@/hooks/use-mounted";

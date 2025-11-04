@@ -12,6 +12,7 @@ import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { inputStyles, buttonStyles } from "@/lib/styles";
 import { toast } from "@/lib/toast";
+import { ShoppingCart, Lock, CreditCard, Sparkles, CheckCircle2 } from "lucide-react";
 
 function CheckoutContent() {
   const mounted = useMounted();
@@ -112,20 +113,69 @@ function CheckoutContent() {
 
   return (
     <>
-      <main className="relative mx-auto w-full max-w-2xl px-4 sm:px-6 py-4 sm:py-12 z-10">
+      <main className="relative mx-auto w-full max-w-3xl px-4 sm:px-6 py-4 sm:py-12 z-10">
         <BackButton label="← Back" onClick={() => router.back()} />
 
-        <div className="mt-12 sm:mt-16 flex flex-col gap-6 sm:gap-8">
-          <div className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white">Complete Purchase</h1>
-            <p className="mt-2 text-xs sm:text-sm text-white/70">{program.title}</p>
+        <div className="mt-12 sm:mt-16 flex flex-col gap-8">
+          {/* Header */}
+          <div className={`transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
+              <ShoppingCart className="h-4 w-4 text-white/80 animate-pulse" />
+              <span className="text-xs sm:text-sm font-medium text-white/90">Secure Checkout</span>
+            </div>
+            
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3">
+              Complete Your Purchase
+            </h1>
+            <p className="text-lg text-white/70">
+              You're one step away from accessing <span className="text-white font-semibold">{program.title}</span>
+            </p>
           </div>
 
-          <div className={`rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 sm:p-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.1s" }}>
-            <div className="mb-4 sm:mb-6 flex items-center justify-between border-b border-white/10 pb-3 sm:pb-4">
-              <span className="text-xs sm:text-sm text-white/70">Total</span>
-              <span className="text-xl sm:text-2xl font-semibold text-white">${program.priceOneOff}.00</span>
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Order Summary */}
+            <div className={`md:col-span-1 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 h-fit transition-all duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.1s" }}>
+              <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wide mb-4">Order Summary</h2>
+              
+              <div className="space-y-3 mb-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-white/70">Program</span>
+                  <span className="text-white font-medium">{program.title}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-white/70">Duration</span>
+                  <span className="text-white">{program.weeks} weeks</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-white/70">Access</span>
+                  <span className="text-white">Lifetime</span>
+                </div>
+              </div>
+              
+              <div className="border-t border-white/20 pt-4 mt-4">
+                <div className="flex justify-between items-baseline mb-4">
+                  <span className="text-sm text-white/70">Total</span>
+                  <span className="text-3xl font-bold text-white">${program.priceOneOff}</span>
+                </div>
+                
+                <div className="flex items-center gap-2 text-xs text-emerald-400">
+                  <Lock className="h-3 w-3" />
+                  <span>Secure SSL encrypted payment</span>
+                </div>
+              </div>
             </div>
+
+            {/* Payment Form */}
+            <div className={`md:col-span-2 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.2s" }}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="rounded-xl border border-white/20 bg-white/10 p-3">
+                  <CreditCard className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-white">Payment Details</h2>
+                  <p className="text-xs text-white/60">All transactions are secure and encrypted</p>
+                </div>
+              </div>
             
             <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               <div>
@@ -276,12 +326,39 @@ function CheckoutContent() {
                 type="submit"
                 variant="ghost"
                 disabled={isSubmitting}
-                className={`mt-6 w-full ${buttonStyles.primary} disabled:opacity-50 disabled:cursor-not-allowed`}
+                className="mt-6 w-full h-13 rounded-xl border-2 border-white/40 bg-white/20 text-white font-bold backdrop-blur-xl transition-all duration-300 hover:border-white/50 hover:bg-white/30 hover:shadow-xl hover:shadow-white/20 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 group"
                 aria-label="Complete Purchase"
               >
-                {isSubmitting ? "Processing..." : "Complete Purchase"}
+                {isSubmitting ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white mr-2" />
+                    Processing Payment...
+                  </>
+                ) : (
+                  <>
+                    <Lock className="h-5 w-5 mr-2" />
+                    Complete Secure Purchase
+                    <CheckCircle2 className="h-5 w-5 ml-2 transition-transform group-hover:scale-110" />
+                  </>
+                )}
               </Button>
+
+              {/* Security badges */}
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-white/50">
+                <div className="flex items-center gap-1.5">
+                  <Lock className="h-3 w-3" />
+                  <span>256-bit SSL</span>
+                </div>
+                <div>•</div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3 w-3" />
+                  <span>PCI Compliant</span>
+                </div>
+                <div>•</div>
+                <div>Money-back guarantee</div>
+              </div>
             </form>
+            </div>
           </div>
         </div>
       </main>
