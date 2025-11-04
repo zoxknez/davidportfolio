@@ -10,7 +10,7 @@ import { ZodError } from "zod";
 import { useMounted } from "@/hooks/use-mounted";
 import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
-import { inputStyles, buttonStyles } from "@/lib/styles";
+import { inputStyles } from "@/lib/styles";
 import { toast } from "@/lib/toast";
 import { ShoppingCart, Lock, CreditCard, Sparkles, CheckCircle2 } from "lucide-react";
 
