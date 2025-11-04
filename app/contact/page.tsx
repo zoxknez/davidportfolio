@@ -56,46 +56,67 @@ export default function ContactPage() {
         <BackButton />
         
         <div className="mt-12 sm:mt-4 pt-0">
-          <h1 className={`text-2xl sm:text-3xl md:text-4xl font-semibold text-white transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
-            Get in touch
-          </h1>
-          <p className={`mt-2 text-xs sm:text-sm text-white/70 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.1s" }}>
-            Let&apos;s discuss your training goals.
-          </p>
+          <div className={`transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
+              <MessageSquare className="h-4 w-4 text-white/80 animate-pulse" />
+              <span className="text-xs sm:text-sm font-medium text-white/90">Start Your Journey</span>
+            </div>
+            
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3">
+              Get in Touch
+            </h1>
+            <p className="text-base sm:text-lg text-white/70 max-w-xl">
+              Ready to transform? Let&apos;s discuss your training goals and find the perfect program for you.
+            </p>
+          </div>
         </div>
 
         {/* Contact Info Cards */}
-        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.15s" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {contactInfo.map((contact, idx) => {
             const Icon = contact.icon;
             return (
-              <a
+              <div
                 key={idx}
-                href={contact.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-lg hover:shadow-white/10"
+                className="animate-slide-up"
+                style={{ animationDelay: `${0.15 + idx * 0.05}s` }}
               >
-                <div className="flex items-start gap-3">
-                  <div className="rounded-lg border border-white/10 bg-white/5 p-2.5 transition-all duration-300 group-hover:border-white/20 group-hover:bg-white/10">
-                    <Icon className="h-5 w-5 text-white/80" />
+                <a
+                  href={contact.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-1"
+                >
+                  {/* Glow effect */}
+                  <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 opacity-0 group-hover:opacity-100 blur transition-opacity duration-500 -z-10" />
+                  
+                  <div className="flex items-start gap-4">
+                    <div className="rounded-xl border border-white/20 bg-white/10 p-3 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/15">
+                      <Icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs text-white/60 uppercase tracking-wide mb-1 font-medium">{contact.label}</div>
+                      <div className={`text-sm font-semibold truncate ${contact.color} transition-colors group-hover:text-white`}>{contact.value}</div>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-white/40 transition-all duration-300 group-hover:text-white group-hover:translate-x-1" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs text-white/60 uppercase tracking-wide mb-1">{contact.label}</div>
-                    <div className={`text-sm font-medium truncate ${contact.color}`}>{contact.value}</div>
-                  </div>
-                </div>
-              </a>
+                </a>
+              </div>
             );
           })}
         </div>
 
         {/* Contact Form */}
         {mounted && (
-          <div className={`rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-5 sm:p-6 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.2s" }}>
-            <div className="flex items-center gap-2 mb-6">
-              <MessageSquare className="h-5 w-5 text-white/80" />
-              <h2 className="text-lg font-semibold text-white">Send a message</h2>
+          <div className={`rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-700 hover:border-white/20 hover:bg-white/10 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ animationDelay: "0.3s" }}>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="rounded-xl border border-white/20 bg-white/10 p-3">
+                <MessageSquare className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-white">Send a Message</h2>
+                <p className="text-xs text-white/60">We'll get back to you within 24 hours</p>
+              </div>
             </div>
             <form 
               onSubmit={async (e) => { 
