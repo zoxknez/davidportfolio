@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { Users, Calendar, TrendingUp, Sparkles, Clock, Trophy, ArrowRight, UserPlus } from "lucide-react";
+import { Users, Calendar, TrendingUp, Sparkles, Clock, Trophy, UserPlus } from "lucide-react";
 
 export default function GroupCoachingPage() {
   const [mounted, setMounted] = useState(false);
