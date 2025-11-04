@@ -69,15 +69,7 @@ export async function generateMetadata({
 
 export default function ProgramDetail({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <div className="min-h-dvh font-sans text-white relative overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="fixed inset-0 animated-gradient" />
-      <div className="fixed inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60" />
-      
-      {/* Animated Glow Orbs */}
-      <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animated-glow" />
-      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animated-glow" style={{ animationDelay: "1.5s" }} />
-
+    <div className="min-h-dvh font-sans text-white relative overflow-hidden bg-black">
       <Suspense fallback={
         <main className="relative mx-auto w-full max-w-2xl px-4 sm:px-6 py-4 sm:py-12 z-10 flex items-center justify-center min-h-dvh">
           <div className="text-white/70">Loading...</div>
