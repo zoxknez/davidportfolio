@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -14,7 +14,6 @@ import { CheckCircle2, Sparkles, Trophy, Target, Calendar, TrendingUp, ArrowRigh
 function RecommendationContent() {
   const mounted = useMounted();
   const searchParams = useSearchParams();
-  const [showConfetti, setShowConfetti] = useState(false);
 
   const goal = searchParams.get("goal") ?? "fat-loss";
   const days = Number(searchParams.get("days") ?? 3);
@@ -49,11 +48,6 @@ function RecommendationContent() {
       highlights: ["Female-specific", "Strength focus", "Empowerment"],
     },
   }[pick];
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowConfetti(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <main className="relative mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-8 px-4 sm:px-6 py-8 sm:py-12 z-10">
