@@ -70,7 +70,7 @@ export const programs: Program[] = [
     image:
       "https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1600&auto=format&fit=crop",
     gallery: [
-      "https://images.unsplash.com/photo-1583454110551-21f2fa2f276d?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1600&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?q=80&w=1600&auto=format&fit=crop",
     ],
     equipment: ["Kettlebell", "Bands"],
