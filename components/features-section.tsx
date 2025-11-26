@@ -1,4 +1,6 @@
-import { ScrollReveal } from "./scroll-reveal";
+"use client";
+
+import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface Feature {
@@ -29,7 +31,13 @@ export function FeaturesSection({
   return (
     <div className="w-full">
       {(title || subtitle) && (
-        <ScrollReveal className="text-center mb-12">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           {title && (
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
               {title}
@@ -40,17 +48,19 @@ export function FeaturesSection({
               {subtitle}
             </p>
           )}
-        </ScrollReveal>
+        </motion.div>
       )}
 
       <div className={`grid grid-cols-1 ${gridCols[columns]} gap-6`}>
         {features.map((feature, index) => {
           const Icon = feature.icon;
           return (
-            <ScrollReveal
+            <motion.div
               key={index}
-              delay={index * 0.1}
-              direction="up"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
               className="group"
             >
               <div className="relative h-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-2 cursor-pointer">
@@ -84,7 +94,7 @@ export function FeaturesSection({
                   <div className="h-0.5 w-0 bg-gradient-to-r from-white/40 to-transparent transition-all duration-500 group-hover:w-full" />
                 </div>
               </div>
-            </ScrollReveal>
+            </motion.div>
           );
         })}
       </div>

@@ -2,9 +2,9 @@
 
 import { Calendar, Clock, ArrowRight, Sparkles, BookOpen, TrendingUp } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
-import { ScrollReveal } from "@/components/scroll-reveal";
 import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
+import { motion } from "framer-motion";
 
 export default function NewsPage() {
   const mounted = useMounted();
@@ -65,6 +65,8 @@ export default function NewsPage() {
     return date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   };
 
+  if (!mounted) return null;
+
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
       <AnimatedBackground />
@@ -74,7 +76,11 @@ export default function NewsPage() {
 
         {/* Header */}
         <div className="mt-12 sm:mt-16 md:mt-20 mb-12 pt-0">
-          <div className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
               <Sparkles className="h-4 w-4 text-white/80" />
@@ -108,22 +114,31 @@ export default function NewsPage() {
 
             {/* Categories filter - static for now */}
             <div className="flex flex-wrap gap-2">
-              {Array.from(new Set(newsItems.map(item => item.category))).map((category) => (
-                <button
+              {Array.from(new Set(newsItems.map(item => item.category))).map((category, idx) => (
+                <motion.button
                   key={category}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.3 + (idx * 0.05) }}
                   className="px-3 py-1.5 text-xs font-medium rounded-full border border-white/20 bg-white/10 text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:bg-white/20 hover:text-white"
                 >
                   {category}
-                </button>
+                </motion.button>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* News Grid with Scroll Reveal */}
         <div className="grid grid-cols-1 gap-6 pb-12">
           {newsItems.map((item, index) => (
-            <ScrollReveal key={item.id} delay={index * 0.05} direction="up">
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: index * 0.05, duration: 0.5 }}
+            >
               <article className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-1">
                 {/* Glow effect */}
                 <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 opacity-0 group-hover:opacity-100 blur transition-opacity duration-500 -z-10" />
@@ -162,30 +177,34 @@ export default function NewsPage() {
                   </button>
                 </div>
               </article>
-            </ScrollReveal>
+            </motion.div>
           ))}
         </div>
 
         {/* Newsletter CTA */}
-        <ScrollReveal>
-          <div className="mt-8 mb-12">
-            <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 text-center">
-              <BookOpen className="h-12 w-12 text-white/80 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-white mb-3">
-                Stay Updated
-              </h2>
-              <p className="text-white/70 mb-6 max-w-md mx-auto">
-                Get the latest training tips, nutrition advice, and exclusive content delivered to your inbox.
-              </p>
-              <a
-                href="/contact"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/10 text-white font-medium backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:bg-white/20 hover:shadow-lg hover:shadow-white/10"
-              >
-                Subscribe to Newsletter
-              </a>
-            </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="mt-8 mb-12"
+        >
+          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 text-center">
+            <BookOpen className="h-12 w-12 text-white/80 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-white mb-3">
+              Stay Updated
+            </h2>
+            <p className="text-white/70 mb-6 max-w-md mx-auto">
+              Get the latest training tips, nutrition advice, and exclusive content delivered to your inbox.
+            </p>
+            <a
+              href="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/10 text-white font-medium backdrop-blur-sm transition-all duration-300 hover:border-white/30 hover:bg-white/20 hover:shadow-lg hover:shadow-white/10"
+            >
+              Subscribe to Newsletter
+            </a>
           </div>
-        </ScrollReveal>
+        </motion.div>
       </main>
     </div>
   );

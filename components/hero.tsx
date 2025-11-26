@@ -8,49 +8,81 @@ import { heroContent } from "@/data/home-content";
 import { useMounted } from "@/hooks/use-mounted";
 import { buttonStyles } from "@/lib/styles";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function Hero() {
   const mounted = useMounted();
 
+  if (!mounted) return null;
+
   return (
-    <section className={`flex flex-col items-center gap-10 text-center transition-opacity duration-700 ${mounted ? "opacity-100" : "opacity-0"}`}>
+    <section className="flex flex-col items-center gap-10 text-center">
       <div className="flex flex-col items-center gap-6">
         {/* Floating badge */}
-        <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl">
             <Sparkles className="h-4 w-4 text-white/80 animate-pulse" />
             <span className="text-xs sm:text-sm font-medium text-white/90">Premium Fitness Coaching</span>
           </div>
-        </div>
+        </motion.div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.1] tracking-tight text-white animate-fade-in" style={{
-          textShadow: "0 2px 20px rgba(0, 0, 0, 0.5), 0 4px 40px rgba(0, 0, 0, 0.3), 0 0 80px rgba(255, 255, 255, 0.1)",
-          letterSpacing: "-0.03em",
-          animationDelay: "0.2s",
-        }}>
+        <motion.h1 
+          className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.1] tracking-tight text-white"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          style={{
+            textShadow: "0 2px 20px rgba(0, 0, 0, 0.5), 0 4px 40px rgba(0, 0, 0, 0.3), 0 0 80px rgba(255, 255, 255, 0.1)",
+            letterSpacing: "-0.03em",
+          }}
+        >
           David Knežević
-        </h1>
+        </motion.h1>
         
-        <div className="h-[1px] w-20 sm:w-24 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-slide-up" style={{ animationDelay: "0.3s" }} />
+        <motion.div 
+          className="h-[1px] w-20 sm:w-24 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        />
         
         {/* Dynamic typing effect */}
-        <div className="min-h-[3rem] sm:min-h-[3.5rem] flex items-center justify-center animate-slide-up" style={{ animationDelay: "0.4s" }}>
+        <motion.div 
+          className="min-h-[3rem] sm:min-h-[3.5rem] flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <p className="max-w-2xl text-xl sm:text-2xl md:text-3xl font-light leading-relaxed text-white/90 tracking-wide" style={{ 
             textShadow: "0 2px 15px rgba(0, 0, 0, 0.5)",
             letterSpacing: "0.01em",
           }}>
             <TypingEffect phrases={heroContent.dynamicPhrases} typingSpeed={80} deletingSpeed={40} pauseDuration={2000} />
           </p>
-        </div>
+        </motion.div>
 
         {/* Subtitle */}
-        <p className="max-w-xl text-sm sm:text-base text-white/70 animate-slide-up" style={{ animationDelay: "0.5s" }}>
+        <motion.p 
+          className="max-w-xl text-sm sm:text-base text-white/70"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
           {heroContent.subtitle}
-        </p>
+        </motion.p>
       </div>
 
       {/* CTA Buttons - Primary action highlighted */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up w-full max-w-md" style={{ animationDelay: "0.6s" }}>
+      <motion.div 
+        className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+      >
         <Button 
           variant="ghost" 
           className="group relative w-full sm:w-auto h-12 px-8 rounded-full border-2 border-white/30 bg-white/20 text-white font-semibold backdrop-blur-xl transition-all duration-300 hover:border-white/50 hover:bg-white/30 hover:shadow-xl hover:shadow-white/20 hover:scale-105"
@@ -68,10 +100,15 @@ export function Hero() {
         >
           <Link href="/programs">View Programs</Link>
         </Button>
-      </div>
+      </motion.div>
 
       {/* Navigation Links */}
-      <div className="flex w-full flex-col items-center justify-center gap-3 sm:flex-row animate-slide-up flex-wrap" style={{ animationDelay: "0.7s" }}>
+      <motion.div 
+        className="flex w-full flex-col items-center justify-center gap-3 sm:flex-row flex-wrap"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
+      >
         <TrainingDropdown />
         <Button variant="ghost" className={buttonStyles.primary} asChild>
           <Link href="/media">Media</Link>
@@ -82,7 +119,7 @@ export function Hero() {
         <Button variant="ghost" className={buttonStyles.primary} asChild>
           <Link href="/contact">Contact</Link>
         </Button>
-      </div>
+      </motion.div>
     </section>
   );
 }

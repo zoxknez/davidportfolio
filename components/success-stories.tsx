@@ -1,4 +1,6 @@
-import { ScrollReveal } from "./scroll-reveal";
+"use client";
+
+import { motion } from "framer-motion";
 import { TrendingUp, Award, Zap, type LucideIcon } from "lucide-react";
 
 interface SuccessStory {
@@ -28,23 +30,31 @@ export function SuccessStories({
 
   return (
     <div className="w-full">
-      <ScrollReveal className="text-center mb-12">
+      <motion.div 
+        className="text-center mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.6 }}
+      >
         <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
           {title}
         </h2>
         <p className="text-lg text-white/70 max-w-2xl mx-auto">
           {subtitle}
         </p>
-      </ScrollReveal>
+      </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {stories.map((story, index) => {
           const Icon = icons[index % icons.length]!;
           return (
-            <ScrollReveal
+            <motion.div
               key={index}
-              delay={index * 0.15}
-              direction="up"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: index * 0.15, duration: 0.5 }}
               className="group h-full"
             >
               <div className="relative h-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-2">
@@ -110,7 +120,7 @@ export function SuccessStories({
                   </div>
                 </div>
               </div>
-            </ScrollReveal>
+            </motion.div>
           );
         })}
       </div>

@@ -10,6 +10,7 @@ import { BackButton } from "@/components/back-button";
 import { AnimatedCounter } from "@/components/animated-counter";
 import { buttonStyles } from "@/lib/styles";
 import { CheckCircle2, Sparkles, Trophy, Target, Calendar, TrendingUp, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 function RecommendationContent() {
   const mounted = useMounted();
@@ -49,16 +50,33 @@ function RecommendationContent() {
     },
   }[pick];
 
+  if (!mounted) return null;
+
   return (
     <main className="relative mx-auto flex min-h-dvh w-full max-w-3xl flex-col gap-8 px-4 sm:px-6 py-8 sm:py-12 z-10">
       <BackButton />
       
       {/* Celebration Badge */}
-      <div className={`mt-12 sm:mt-16 flex flex-col items-center gap-6 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-xl animate-bounce-subtle">
-          <Trophy className="h-5 w-5 text-emerald-400 animate-pulse" />
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="mt-12 sm:mt-16 flex flex-col items-center gap-6"
+      >
+        <motion.div 
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ 
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+            delay: 0.2 
+          }}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-xl"
+        >
+          <Trophy className="h-5 w-5 text-emerald-400" />
           <span className="text-sm font-medium text-emerald-300">Perfect Match Found!</span>
-        </div>
+        </motion.div>
         
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center bg-gradient-to-r from-white via-white/90 to-white/80 bg-clip-text text-transparent">
           {programDetails?.name}
@@ -69,7 +87,12 @@ function RecommendationContent() {
         </p>
 
         {/* Match Score */}
-        <div className="relative">
+        <motion.div 
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="relative"
+        >
           <div className="flex items-center gap-3 px-6 py-3 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl">
             <Target className="h-6 w-6 text-white/80" />
             <div className="text-center">
@@ -79,27 +102,41 @@ function RecommendationContent() {
               <div className="text-xs text-white/60">Match Score</div>
             </div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Your Selections */}
-      <div className={`grid grid-cols-3 gap-3 transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.2s" }}>
-        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 text-center">
-          <div className="text-xs text-white/60 mb-2">Goal</div>
-          <div className="font-semibold text-white capitalize">{goal.replace("-", " ")}</div>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 text-center">
-          <div className="text-xs text-white/60 mb-2">Days/Week</div>
-          <div className="font-semibold text-white">{days} days</div>
-        </div>
-        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 text-center">
-          <div className="text-xs text-white/60 mb-2">Profile</div>
-          <div className="font-semibold text-white capitalize">{sex}</div>
-        </div>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+        className="grid grid-cols-3 gap-3"
+      >
+        {[
+          { label: "Goal", value: goal.replace("-", " ") },
+          { label: "Days/Week", value: `${days} days` },
+          { label: "Profile", value: sex }
+        ].map((item, i) => (
+          <motion.div 
+            key={i}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6 + (i * 0.1) }}
+            className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl p-4 text-center"
+          >
+            <div className="text-xs text-white/60 mb-2">{item.label}</div>
+            <div className="font-semibold text-white capitalize">{item.value}</div>
+          </motion.div>
+        ))}
+      </motion.div>
 
       {/* Program Card */}
-      <div className={`rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-500 hover:border-white/20 hover:bg-white/10 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.3s" }}>
+      <motion.div 
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+        className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-500 hover:border-white/20 hover:bg-white/10"
+      >
         <div className="flex items-start gap-4 mb-6">
           <div className="rounded-xl border border-white/20 bg-white/10 p-3">
             <Sparkles className="h-7 w-7 text-white" />
@@ -115,10 +152,16 @@ function RecommendationContent() {
         {/* Highlights */}
         <div className="grid gap-3 mb-6">
           {programDetails?.highlights.map((highlight, index) => (
-            <div key={index} className="flex items-center gap-3 animate-slide-up" style={{ animationDelay: `${0.4 + index * 0.1}s` }}>
+            <motion.div 
+              key={index} 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1 + (index * 0.1) }}
+              className="flex items-center gap-3"
+            >
               <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0" />
               <span className="text-white/90">{highlight}</span>
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -154,14 +197,19 @@ function RecommendationContent() {
             <Link href="/programs">Explore All Programs</Link>
           </Button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Retake Quiz Link */}
-      <div className="text-center">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="text-center"
+      >
         <Link href="/quiz" className="text-sm text-white/60 hover:text-white/90 transition-colors underline">
           Not quite right? Retake the quiz
         </Link>
-      </div>
+      </motion.div>
     </main>
   );
 }

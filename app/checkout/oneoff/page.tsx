@@ -13,6 +13,7 @@ import { BackButton } from "@/components/back-button";
 import { inputStyles } from "@/lib/styles";
 import { toast } from "@/lib/toast";
 import { ShoppingCart, Lock, CreditCard, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 function CheckoutContent() {
   const mounted = useMounted();
@@ -111,6 +112,8 @@ function CheckoutContent() {
     return formatted.slice(0, 19); // Max 16 digits + 3 spaces
   };
 
+  if (!mounted) return null;
+
   return (
     <>
       <main className="relative mx-auto w-full max-w-3xl px-4 sm:px-6 py-4 sm:py-12 z-10">
@@ -118,7 +121,11 @@ function CheckoutContent() {
 
         <div className="mt-12 sm:mt-16 flex flex-col gap-8">
           {/* Header */}
-          <div className={`transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
               <ShoppingCart className="h-4 w-4 text-white/80 animate-pulse" />
               <span className="text-xs sm:text-sm font-medium text-white/90">Secure Checkout</span>
@@ -130,11 +137,16 @@ function CheckoutContent() {
             <p className="text-lg text-white/70">
               You're one step away from accessing <span className="text-white font-semibold">{program.title}</span>
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {/* Order Summary */}
-            <div className={`md:col-span-1 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 h-fit transition-all duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.1s" }}>
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="md:col-span-1 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 h-fit"
+            >
               <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wide mb-4">Order Summary</h2>
               
               <div className="space-y-3 mb-4">
@@ -163,10 +175,15 @@ function CheckoutContent() {
                   <span>Secure SSL encrypted payment</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Payment Form */}
-            <div className={`md:col-span-2 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-500 ${mounted ? "opacity-100" : "opacity-0"}`} style={{ animationDelay: "0.2s" }}>
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="md:col-span-2 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8"
+            >
               <div className="flex items-center gap-3 mb-6">
                 <div className="rounded-xl border border-white/20 bg-white/10 p-3">
                   <CreditCard className="h-6 w-6 text-white" />
@@ -358,7 +375,7 @@ function CheckoutContent() {
                 <div>Money-back guarantee</div>
               </div>
             </form>
-            </div>
+            </motion.div>
           </div>
         </div>
       </main>

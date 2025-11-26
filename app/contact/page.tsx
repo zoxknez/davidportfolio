@@ -10,6 +10,7 @@ import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { inputStyles, buttonStyles } from "@/lib/styles";
 import { toast } from "@/lib/toast";
+import { motion } from "framer-motion";
 
 export default function ContactPage() {
   const mounted = useMounted();
@@ -48,6 +49,8 @@ export default function ContactPage() {
     },
   ];
 
+  if (!mounted) return null;
+
   return (
     <div className="h-screen font-sans text-white relative overflow-hidden">
       <AnimatedBackground />
@@ -56,7 +59,11 @@ export default function ContactPage() {
         <BackButton />
         
         <div className="mt-12 sm:mt-4 pt-0">
-          <div className={`transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
               <MessageSquare className="h-4 w-4 text-white/80 animate-pulse" />
               <span className="text-xs sm:text-sm font-medium text-white/90">Start Your Journey</span>
@@ -68,7 +75,7 @@ export default function ContactPage() {
             <p className="text-base sm:text-lg text-white/70 max-w-xl">
               Ready to transform? Let&apos;s discuss your training goals and find the perfect program for you.
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* Contact Info Cards */}
@@ -76,10 +83,11 @@ export default function ContactPage() {
           {contactInfo.map((contact, idx) => {
             const Icon = contact.icon;
             return (
-              <div
+              <motion.div
                 key={idx}
-                className="animate-slide-up"
-                style={{ animationDelay: `${0.15 + idx * 0.05}s` }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + (idx * 0.1) }}
               >
                 <a
                   href={contact.href}
@@ -101,70 +109,54 @@ export default function ContactPage() {
                     <ArrowRight className="h-4 w-4 text-white/40 transition-all duration-300 group-hover:text-white group-hover:translate-x-1" />
                   </div>
                 </a>
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Contact Form */}
-        {mounted && (
-          <div className={`rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-700 hover:border-white/20 hover:bg-white/10 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`} style={{ animationDelay: "0.3s" }}>
-            <div className="flex items-center gap-3 mb-8">
-              <div className="rounded-xl border border-white/20 bg-white/10 p-3">
-                <MessageSquare className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-white">Send a Message</h2>
-                <p className="text-xs text-white/60">We'll get back to you within 24 hours</p>
-              </div>
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-700 hover:border-white/20 hover:bg-white/10"
+        >
+          <div className="flex items-center gap-3 mb-8">
+            <div className="rounded-xl border border-white/20 bg-white/10 p-3">
+              <MessageSquare className="h-6 w-6 text-white" />
             </div>
-            <form 
-              onSubmit={async (e) => { 
-                e.preventDefault();
-                setIsSubmitting(true);
-                setErrors({});
+            <div>
+              <h2 className="text-xl font-bold text-white">Send a Message</h2>
+              <p className="text-xs text-white/60">We'll get back to you within 24 hours</p>
+            </div>
+          </div>
+          <form 
+            onSubmit={async (e) => { 
+              e.preventDefault();
+              setIsSubmitting(true);
+              setErrors({});
 
-                try {
-                  // Validate form data on client side first
-                  const validated = contactFormSchema.parse(form);
-                  
-                  // Send to API with loading toast
-                  const response = await fetch("/api/contact", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(validated),
-                  });
+              try {
+                // Validate form data on client side first
+                const validated = contactFormSchema.parse(form);
+                
+                // Send to API with loading toast
+                const response = await fetch("/api/contact", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(validated),
+                });
 
-                  const data = await response.json();
+                const data = await response.json();
 
-                  if (!response.ok) {
-                    // Handle validation or rate limit errors from API
-                    if (data.details && Array.isArray(data.details)) {
-                      const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
-                      data.details.forEach((err: { field: string; message: string }) => {
-                        const field = err.field as keyof ContactFormData;
-                        if (field) {
-                          newErrors[field] = err.message;
-                        }
-                      });
-                      setErrors(newErrors);
-                      toast.error("Validation failed", "Please check your form and try again.");
-                    } else {
-                      toast.error("Failed to send message", data.error || "Please try again later.");
-                    }
-                    return;
-                  }
-                  
-                  // Success!
-                  toast.success("Message sent!", "Thank you for contacting us. We'll get back to you soon.");
-                  setForm({ name: "", email: "", message: "" });
-                } catch (error) {
-                  if (error instanceof ZodError) {
+                if (!response.ok) {
+                  // Handle validation or rate limit errors from API
+                  if (data.details && Array.isArray(data.details)) {
                     const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
-                    error.issues.forEach((err) => {
-                      const field = err.path[0] as keyof ContactFormData;
+                    data.details.forEach((err: { field: string; message: string }) => {
+                      const field = err.field as keyof ContactFormData;
                       if (field) {
                         newErrors[field] = err.message;
                       }
@@ -172,106 +164,125 @@ export default function ContactPage() {
                     setErrors(newErrors);
                     toast.error("Validation failed", "Please check your form and try again.");
                   } else {
-                    console.error("Contact form error:", error);
-                    toast.error("Unexpected error", "An unexpected error occurred. Please try again later.");
+                    toast.error("Failed to send message", data.error || "Please try again later.");
                   }
-                } finally {
-                  setIsSubmitting(false);
+                  return;
                 }
-              }} 
-              className="grid gap-5"
+                
+                // Success!
+                toast.success("Message sent!", "Thank you for contacting us. We'll get back to you soon.");
+                setForm({ name: "", email: "", message: "" });
+              } catch (error) {
+                if (error instanceof ZodError) {
+                  const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
+                  error.issues.forEach((err) => {
+                    const field = err.path[0] as keyof ContactFormData;
+                    if (field) {
+                      newErrors[field] = err.message;
+                    }
+                  });
+                  setErrors(newErrors);
+                  toast.error("Validation failed", "Please check your form and try again.");
+                } else {
+                  console.error("Contact form error:", error);
+                  toast.error("Unexpected error", "An unexpected error occurred. Please try again later.");
+                }
+              } finally {
+                setIsSubmitting(false);
+              }
+            }} 
+            className="grid gap-5"
+          >
+            <div className="space-y-2">
+              <label htmlFor="contact-name" className="block text-sm font-medium text-white/80">
+                Name
+              </label>
+              <input
+                id="contact-name"
+                value={form.name}
+                onChange={(e) => {
+                  setForm({ ...form, name: e.target.value });
+                  if (errors.name) setErrors({ ...errors, name: undefined });
+                }}
+                placeholder="Your full name"
+                aria-label="Name"
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? "name-error" : undefined}
+                className={`${inputStyles.base} h-12 rounded-lg ${
+                  errors.name ? inputStyles.error : inputStyles.default
+                } focus:ring-2 focus:ring-white/20`}
+              />
+              {errors.name && (
+                <p id="name-error" className="text-xs text-red-400" role="alert">
+                  {errors.name}
+                </p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <label htmlFor="contact-email" className="block text-sm font-medium text-white/80">
+                Email
+              </label>
+              <input
+                id="contact-email"
+                type="email"
+                value={form.email}
+                onChange={(e) => {
+                  setForm({ ...form, email: e.target.value });
+                  if (errors.email) setErrors({ ...errors, email: undefined });
+                }}
+                placeholder="your.email@example.com"
+                aria-label="Email"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
+                className={`${inputStyles.base} h-12 rounded-lg ${
+                  errors.email ? inputStyles.error : inputStyles.default
+                } focus:ring-2 focus:ring-white/20`}
+              />
+              {errors.email && (
+                <p id="email-error" className="text-xs text-red-400" role="alert">
+                  {errors.email}
+                </p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <label htmlFor="contact-message" className="block text-sm font-medium text-white/80">
+                Message
+              </label>
+              <textarea
+                id="contact-message"
+                value={form.message}
+                onChange={(e) => {
+                  setForm({ ...form, message: e.target.value });
+                  if (errors.message) setErrors({ ...errors, message: undefined });
+                }}
+                placeholder="Tell me about your fitness goals..."
+                rows={6}
+                aria-label="Message"
+                aria-invalid={!!errors.message}
+                aria-describedby={errors.message ? "message-error" : undefined}
+                className={`${inputStyles.base} rounded-lg resize-none ${
+                  errors.message ? inputStyles.error : inputStyles.default
+                } focus:ring-2 focus:ring-white/20`}
+              />
+              {errors.message && (
+                <p id="message-error" className="text-xs text-red-400" role="alert">
+                  {errors.message}
+                </p>
+              )}
+            </div>
+            
+            <Button 
+              variant="ghost" 
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full h-12 rounded-lg ${buttonStyles.primary.replace("rounded-full", "rounded-lg")} disabled:opacity-50 disabled:cursor-not-allowed font-medium`}
             >
-              <div className="space-y-2">
-                <label htmlFor="contact-name" className="block text-sm font-medium text-white/80">
-                  Name
-                </label>
-                <input
-                  id="contact-name"
-                  value={form.name}
-                  onChange={(e) => {
-                    setForm({ ...form, name: e.target.value });
-                    if (errors.name) setErrors({ ...errors, name: undefined });
-                  }}
-                  placeholder="Your full name"
-                  aria-label="Name"
-                  aria-invalid={!!errors.name}
-                  aria-describedby={errors.name ? "name-error" : undefined}
-                  className={`${inputStyles.base} h-12 rounded-lg ${
-                    errors.name ? inputStyles.error : inputStyles.default
-                  } focus:ring-2 focus:ring-white/20`}
-                />
-                {errors.name && (
-                  <p id="name-error" className="text-xs text-red-400" role="alert">
-                    {errors.name}
-                  </p>
-                )}
-              </div>
-              
-              <div className="space-y-2">
-                <label htmlFor="contact-email" className="block text-sm font-medium text-white/80">
-                  Email
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => {
-                    setForm({ ...form, email: e.target.value });
-                    if (errors.email) setErrors({ ...errors, email: undefined });
-                  }}
-                  placeholder="your.email@example.com"
-                  aria-label="Email"
-                  aria-invalid={!!errors.email}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                  className={`${inputStyles.base} h-12 rounded-lg ${
-                    errors.email ? inputStyles.error : inputStyles.default
-                  } focus:ring-2 focus:ring-white/20`}
-                />
-                {errors.email && (
-                  <p id="email-error" className="text-xs text-red-400" role="alert">
-                    {errors.email}
-                  </p>
-                )}
-              </div>
-              
-              <div className="space-y-2">
-                <label htmlFor="contact-message" className="block text-sm font-medium text-white/80">
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  value={form.message}
-                  onChange={(e) => {
-                    setForm({ ...form, message: e.target.value });
-                    if (errors.message) setErrors({ ...errors, message: undefined });
-                  }}
-                  placeholder="Tell me about your fitness goals..."
-                  rows={6}
-                  aria-label="Message"
-                  aria-invalid={!!errors.message}
-                  aria-describedby={errors.message ? "message-error" : undefined}
-                  className={`${inputStyles.base} rounded-lg resize-none ${
-                    errors.message ? inputStyles.error : inputStyles.default
-                  } focus:ring-2 focus:ring-white/20`}
-                />
-                {errors.message && (
-                  <p id="message-error" className="text-xs text-red-400" role="alert">
-                    {errors.message}
-                  </p>
-                )}
-              </div>
-              
-              <Button 
-                variant="ghost" 
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full h-12 rounded-lg ${buttonStyles.primary.replace("rounded-full", "rounded-lg")} disabled:opacity-50 disabled:cursor-not-allowed font-medium`}
-              >
-                {isSubmitting ? "Sending..." : "Send Message"}
-              </Button>
-            </form>
-          </div>
-        )}
+              {isSubmitting ? "Sending..." : "Send Message"}
+            </Button>
+          </form>
+        </motion.div>
       </main>
     </div>
   );

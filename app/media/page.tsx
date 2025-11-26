@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Play, ImageIcon, Sparkles, Film, Camera } from "lucide-react";
+import { Play, ImageIcon, Sparkles, Film, Camera, X } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
-import { ScrollReveal } from "@/components/scroll-reveal";
 import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function MediaPage() {
   const mounted = useMounted();
@@ -60,6 +60,8 @@ export default function MediaPage() {
     },
   ];
 
+  if (!mounted) return null;
+
   return (
     <>
       <div className="min-h-dvh font-sans text-white relative overflow-hidden">
@@ -70,7 +72,11 @@ export default function MediaPage() {
 
           {/* Header */}
           <div className="mt-12 sm:mt-16 md:mt-20 mb-12 pt-0">
-            <div className={`transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
                 <Sparkles className="h-4 w-4 text-white/80" />
@@ -106,13 +112,19 @@ export default function MediaPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Media Grid with Scroll Reveal */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 pb-12">
             {mediaItems.map((item, idx) => (
-              <ScrollReveal key={idx} delay={idx * 0.05} direction="up">
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: idx * 0.05, duration: 0.5 }}
+              >
                 <button
                   onClick={() => setSelectedMedia(item)}
                   className="group relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-2"
@@ -174,44 +186,55 @@ export default function MediaPage() {
                     </div>
                   </div>
                 </button>
-              </ScrollReveal>
+              </motion.div>
             ))}
           </div>
         </main>
       </div>
 
       {/* Media Modal */}
-      {selectedMedia && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in"
-          onClick={() => setSelectedMedia(null)}
-        >
-          <div className="relative max-w-5xl w-full aspect-video rounded-xl overflow-hidden border border-white/10 bg-black/50" onClick={(e) => e.stopPropagation()}>
-            {selectedMedia.type === "video" ? (
-              <video
-                className="h-full w-full object-contain"
-                controls
-                autoPlay
-                src={selectedMedia.src}
-              >
-                <source src={selectedMedia.src} type="video/mp4" />
-              </video>
-            ) : (
-              <Image src={selectedMedia.src} alt={selectedMedia.title} fill className="object-contain" />
-            )}
-            <button
-              onClick={() => setSelectedMedia(null)}
-              className="absolute top-4 right-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm p-2 text-white/80 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white"
+      <AnimatePresence>
+        {selectedMedia && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+            onClick={() => setSelectedMedia(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-w-5xl w-full aspect-video rounded-xl overflow-hidden border border-white/10 bg-black/50 shadow-2xl" 
+              onClick={(e) => e.stopPropagation()}
             >
-              ✕
-            </button>
-            <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-              <p className="text-lg font-semibold text-white">{selectedMedia.title}</p>
-            </div>
-          </div>
-        </div>
-      )}
+              {selectedMedia.type === "video" ? (
+                <video
+                  className="h-full w-full object-contain"
+                  controls
+                  autoPlay
+                  src={selectedMedia.src}
+                >
+                  <source src={selectedMedia.src} type="video/mp4" />
+                </video>
+              ) : (
+                <Image src={selectedMedia.src} alt={selectedMedia.title} fill className="object-contain" />
+              )}
+              <button
+                onClick={() => setSelectedMedia(null)}
+                className="absolute top-4 right-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm p-2 text-white/80 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-white z-10"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+                <p className="text-lg font-semibold text-white">{selectedMedia.title}</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
-

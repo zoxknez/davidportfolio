@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ScrollReveal } from "@/components/scroll-reveal";
 import { User, Calendar, Video, MessageSquare, Target, Award, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
+import { useMounted } from "@/hooks/use-mounted";
+import { motion } from "framer-motion";
 
 export default function OneOnOneCoachingPage() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const mounted = useMounted();
 
   const features = [
     {
@@ -66,6 +65,8 @@ export default function OneOnOneCoachingPage() {
     },
   ];
 
+  if (!mounted) return null;
+
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden bg-black">
       <main className="relative mx-auto w-full max-w-5xl px-4 sm:px-6 py-8 sm:py-12 z-10">
@@ -81,7 +82,11 @@ export default function OneOnOneCoachingPage() {
 
         {/* Header */}
         <div className="mt-16 sm:mt-20 mb-12">
-          <div className={`transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl mb-6">
               <Sparkles className="h-4 w-4 text-white/80 animate-pulse" />
               <span className="text-xs sm:text-sm font-medium text-white/90">Premium 1-on-1 Training</span>
@@ -93,7 +98,7 @@ export default function OneOnOneCoachingPage() {
             <p className="text-lg sm:text-xl text-white/70 max-w-2xl leading-relaxed">
               Transform your fitness with personalized attention, expert guidance, and proven training methods.
             </p>
-          </div>
+          </motion.div>
         </div>
 
         {/* Features Grid */}
@@ -101,7 +106,13 @@ export default function OneOnOneCoachingPage() {
           {features.map((feature, idx) => {
             const Icon = feature.icon;
             return (
-              <ScrollReveal key={idx} delay={idx * 0.1} direction="up">
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+              >
                 <div className="group relative h-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 transition-all duration-500 hover:border-white/20 hover:bg-white/10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-2">
                   {/* Glow effect */}
                   <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 opacity-0 group-hover:opacity-100 blur transition-opacity duration-500 -z-10" />
@@ -116,13 +127,19 @@ export default function OneOnOneCoachingPage() {
                     {feature.description}
                   </p>
                 </div>
-              </ScrollReveal>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Packages */}
-        <ScrollReveal className="mt-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="mt-16"
+        >
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 text-center">Choose Your Package</h2>
           <p className="text-white/70 mb-10 text-center max-w-2xl mx-auto">
             Select the coaching plan that fits your schedule and goals
@@ -132,7 +149,13 @@ export default function OneOnOneCoachingPage() {
             {packages.map((pkg, idx) => {
               const isPopular = idx === 1; // Middle package is popular
               return (
-                <ScrollReveal key={idx} delay={idx * 0.1} direction="up">
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: idx * 0.1, duration: 0.5 }}
+                >
                   <div className={`group relative h-full rounded-3xl border backdrop-blur-xl p-7 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 ${
                     isPopular 
                       ? "border-white/30 bg-white/10 shadow-xl shadow-white/10 scale-105" 
@@ -181,11 +204,11 @@ export default function OneOnOneCoachingPage() {
                       </a>
                     </Button>
                   </div>
-                </ScrollReveal>
+                </motion.div>
               );
             })}
           </div>
-        </ScrollReveal>
+        </motion.div>
       </main>
     </div>
   );

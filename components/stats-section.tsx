@@ -1,5 +1,7 @@
+"use client";
+
 import { AnimatedCounter } from "./animated-counter";
-import { ScrollReveal } from "./scroll-reveal";
+import { motion } from "framer-motion";
 
 interface Stat {
   value: number;
@@ -19,7 +21,13 @@ export function StatsSection({ stats, title, subtitle }: StatsSectionProps) {
   return (
     <div className="w-full">
       {(title || subtitle) && (
-        <ScrollReveal className="text-center mb-12">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+        >
           {title && (
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
               {title}
@@ -30,15 +38,17 @@ export function StatsSection({ stats, title, subtitle }: StatsSectionProps) {
               {subtitle}
             </p>
           )}
-        </ScrollReveal>
+        </motion.div>
       )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         {stats.map((stat, index) => (
-          <ScrollReveal
+          <motion.div
             key={index}
-            delay={index * 0.1}
-            direction="up"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
             className="group"
           >
             <div className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-xl hover:shadow-white/5 hover:-translate-y-1">
@@ -64,7 +74,7 @@ export function StatsSection({ stats, title, subtitle }: StatsSectionProps) {
                 )}
               </div>
             </div>
-          </ScrollReveal>
+          </motion.div>
         ))}
       </div>
     </div>
