@@ -4,7 +4,6 @@ import { programs } from "@/data/programs";
 import { ProgramFinder } from "@/components/program-finder";
 import { useMounted } from "@/hooks/use-mounted";
 import { BackButton } from "@/components/back-button";
-import { AnimatedBackground } from "@/components/animated-background";
 import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -15,7 +14,6 @@ export default function ProgramsClient() {
 
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
-      <AnimatedBackground />
 
       <main className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 py-4 sm:py-12 z-10">
         <BackButton />

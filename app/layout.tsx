@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { clientEnv } from "@/lib/env";
 import { reportWebVitals } from "@/lib/web-vitals";
 import { Toaster } from "sonner";
+import { AnimatedBackground } from "@/components/animated-background";
 
 // Export reportWebVitals for Next.js to use
 export { reportWebVitals };
@@ -104,9 +105,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="bg-black">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-transparent`}
         suppressHydrationWarning
       >
+        <AnimatedBackground />
         {/* Skip to main content link for accessibility */}
         <a
           href="#main-content"

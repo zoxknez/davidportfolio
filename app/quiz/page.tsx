@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { QuizProgress } from "@/components/quiz-progress";
 import { useMounted } from "@/hooks/use-mounted";
-import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { buttonStyles } from "@/lib/styles";
 import { Flame, Dumbbell, Zap, Calendar, User, Sparkles } from "lucide-react";
@@ -45,7 +44,6 @@ export default function QuizPage() {
 
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
-      <AnimatedBackground />
 
       <main className="relative mx-auto flex min-h-dvh w-full max-w-xl flex-col items-center justify-center gap-6 sm:gap-8 px-4 sm:px-6 py-16 sm:py-12 z-10">
         <BackButton />

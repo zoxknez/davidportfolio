@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useMounted } from "@/hooks/use-mounted";
-import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { AnimatedCounter } from "@/components/animated-counter";
 import { buttonStyles } from "@/lib/styles";
@@ -217,7 +216,6 @@ function RecommendationContent() {
 export default function RecommendationPage() {
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
-      <AnimatedBackground />
 
       <Suspense fallback={
         <main className="relative mx-auto flex min-h-dvh w-full max-w-2xl flex-col gap-6 px-4 sm:px-6 py-4 sm:py-12 z-10 items-center justify-center">

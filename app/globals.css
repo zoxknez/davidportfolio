@@ -118,13 +118,13 @@
   }
   
   html {
-    @apply bg-black;
+    @apply bg-transparent;
     /* Prevent overscroll bounce on mobile */
     overscroll-behavior: none;
   }
   
   body {
-    @apply bg-black text-foreground;
+    @apply bg-transparent text-foreground;
     scroll-behavior: smooth;
     /* Additional overscroll prevention */
     overscroll-behavior-y: none;

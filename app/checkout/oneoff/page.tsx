@@ -8,7 +8,6 @@ import { notFound } from "next/navigation";
 import { checkoutFormSchema, type CheckoutFormData } from "@/lib/validations";
 import { ZodError } from "zod";
 import { useMounted } from "@/hooks/use-mounted";
-import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { inputStyles } from "@/lib/styles";
 import { toast } from "@/lib/toast";
@@ -386,7 +385,6 @@ function CheckoutContent() {
 export default function CheckoutPage() {
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
-      <AnimatedBackground />
 
       <Suspense fallback={
         <main className="relative mx-auto w-full max-w-2xl px-4 sm:px-6 py-4 sm:py-12 z-10 flex items-center justify-center min-h-dvh">

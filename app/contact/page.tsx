@@ -6,7 +6,6 @@ import { Mail, Globe, Instagram, Facebook, MessageSquare, ArrowRight } from "luc
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 import { ZodError } from "zod";
 import { useMounted } from "@/hooks/use-mounted";
-import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { inputStyles, buttonStyles } from "@/lib/styles";
 import { toast } from "@/lib/toast";
@@ -53,7 +52,6 @@ export default function ContactPage() {
 
   return (
     <div className="h-screen font-sans text-white relative overflow-hidden">
-      <AnimatedBackground />
 
       <main className="relative mx-auto h-full w-full max-w-2xl flex flex-col gap-4 sm:gap-6 px-4 sm:px-6 py-4 sm:py-8 z-10 overflow-y-auto">
         <BackButton />

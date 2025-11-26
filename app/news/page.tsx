@@ -2,7 +2,6 @@
 
 import { Calendar, Clock, ArrowRight, Sparkles, BookOpen, TrendingUp } from "lucide-react";
 import { useMounted } from "@/hooks/use-mounted";
-import { AnimatedBackground } from "@/components/animated-background";
 import { BackButton } from "@/components/back-button";
 import { motion } from "framer-motion";
 
@@ -69,7 +68,6 @@ export default function NewsPage() {
 
   return (
     <div className="min-h-dvh font-sans text-white relative overflow-hidden">
-      <AnimatedBackground />
 
       <main className="relative mx-auto w-full max-w-4xl px-4 sm:px-6 py-4 sm:py-12 z-10">
         <BackButton />
