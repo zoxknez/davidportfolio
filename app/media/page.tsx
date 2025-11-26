@@ -15,28 +15,28 @@ export default function MediaPage() {
   const mediaItems = [
     {
       type: "image" as const,
-      src: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1600&auto=format&fit=crop",
+      src: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop",
       title: "Functional Training",
     },
     {
       type: "video" as const,
-      src: "https://cdn.coverr.co/videos/coverr-athletes-exercising-3265/1080p.mp4",
-      title: "Athletes Exercising",
+      src: "https://cdn.coverr.co/videos/coverr-gym-workout-with-dumbbells-4646/1080p.mp4",
+      title: "Dumbbell Work",
     },
     {
       type: "image" as const,
-      src: "https://images.unsplash.com/photo-1517438322307-e67111335449?q=80&w=1600&auto=format&fit=crop",
-      title: "Strength Training",
+      src: "https://images.unsplash.com/photo-1517963879466-cd115eb9d433?q=80&w=1600&auto=format&fit=crop",
+      title: "Strength & Power",
     },
     {
       type: "image" as const,
-      src: "https://images.unsplash.com/photo-1554344728-77cf90d9ed26?q=80&w=1600&auto=format&fit=crop",
+      src: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=1600&auto=format&fit=crop",
       title: "Conditioning",
     },
     {
       type: "video" as const,
-      src: "https://cdn.coverr.co/videos/coverr-running-at-the-stadium-9164/1080p.mp4",
-      title: "Stadium Running",
+      src: "https://cdn.coverr.co/videos/coverr-crossfit-battle-ropes-1566/1080p.mp4",
+      title: "High Intensity",
     },
     {
       type: "image" as const,
@@ -45,18 +45,18 @@ export default function MediaPage() {
     },
     {
       type: "image" as const,
-      src: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1600&auto=format&fit=crop",
+      src: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1600&auto=format&fit=crop",
       title: "Athletic Movement",
     },
     {
       type: "video" as const,
-      src: "https://cdn.coverr.co/videos/coverr-girl-exercising-in-the-living-room-5396/1080p.mp4",
-      title: "Home Workout",
+      src: "https://cdn.coverr.co/videos/coverr-woman-doing-squats-with-weights-4648/1080p.mp4",
+      title: "Leg Day",
     },
     {
       type: "image" as const,
-      src: "https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1600&auto=format&fit=crop",
-      title: "Women's Training",
+      src: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1600&auto=format&fit=crop",
+      title: "Women's Strength",
     },
   ];
 

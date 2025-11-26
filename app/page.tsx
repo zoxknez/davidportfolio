@@ -6,6 +6,7 @@ import { FeaturesSection } from "@/components/features-section";
 import { Testimonials } from "@/components/testimonials";
 import { SuccessStories } from "@/components/success-stories";
 import { CtaSection } from "@/components/cta-section";
+import { AnimatedBackground } from "@/components/animated-background";
 import { stats, testimonials, successStories } from "@/data/home-content";
 import { Target, Award, Users, Heart, Dumbbell, Clock } from "lucide-react";
 
@@ -44,7 +45,9 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-dvh font-sans text-zinc-900 dark:text-zinc-50 bg-black">
+    <div className="min-h-dvh font-sans text-zinc-900 dark:text-zinc-50">
+      <AnimatedBackground />
+      
       {/* Hero Section */}
       <div className="relative">
         <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col items-center justify-center gap-8 px-6 py-12">
