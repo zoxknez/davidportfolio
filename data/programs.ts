@@ -22,12 +22,12 @@ export const programs: Program[] = [
     level: "intermediate",
     weeks: 8,
     daysPerWeek: 4,
-    trailer: "https://cdn.coverr.co/videos/coverr-athletes-exercising-3265/1080p.mp4",
+    trailer: "https://cdn.coverr.co/videos/coverr-gym-workout-with-dumbbells-4646/1080p.mp4",
     image:
-      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1600&auto=format&fit=crop",
     gallery: [
-      "https://images.unsplash.com/photo-1517438322307-e67111335449?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1554344728-77cf90d9ed26?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1574680096141-1cddd32e04ca?q=80&w=1600&auto=format&fit=crop",
     ],
     equipment: ["Dumbbells", "Barbell", "Bench"],
     syllabus: [
@@ -44,12 +44,12 @@ export const programs: Program[] = [
     level: "advanced",
     weeks: 10,
     daysPerWeek: 5,
-    trailer: "https://cdn.coverr.co/videos/coverr-running-at-the-stadium-9164/1080p.mp4",
+    trailer: "https://cdn.coverr.co/videos/coverr-crossfit-battle-ropes-1566/1080p.mp4",
     image:
-      "https://images.unsplash.com/photo-1546483875-ad9014c88eba?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1517963879466-cd115eb9d433?q=80&w=1600&auto=format&fit=crop",
     gallery: [
-      "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1550345332-09e3ac987658?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=1600&auto=format&fit=crop",
     ],
     equipment: ["Rower", "SkiErg", "Sled"],
     syllabus: [
@@ -66,12 +66,12 @@ export const programs: Program[] = [
     level: "beginner",
     weeks: 6,
     daysPerWeek: 3,
-    trailer: "https://cdn.coverr.co/videos/coverr-girl-exercising-in-the-living-room-5396/1080p.mp4",
+    trailer: "https://cdn.coverr.co/videos/coverr-woman-doing-squats-with-weights-4648/1080p.mp4",
     image:
-      "https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1600&auto=format&fit=crop",
     gallery: [
       "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=1600&auto=format&fit=crop",
     ],
     equipment: ["Kettlebell", "Bands"],
     syllabus: [
