@@ -72,7 +72,6 @@ export function AnimatedBackground() {
           muted
           playsInline
           preload="metadata"
-          poster="/video-poster.jpg"
           onLoadedData={() => setVideoLoaded(true)}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
             videoLoaded ? "opacity-40" : "opacity-0"
@@ -92,7 +91,13 @@ export function AnimatedBackground() {
       )}
       
       <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/90 backdrop-blur-[2px]" />
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay" />
+      {/* Noise texture effect using CSS */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
     </div>
   );
 }

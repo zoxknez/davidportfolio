@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Mail, Globe, Instagram, Facebook, MessageSquare, ArrowRight } from "lucide-react";
+import { Mail, Instagram, MessageSquare, ArrowRight } from "lucide-react";
 import { contactFormSchema, type ContactFormData } from "@/lib/validations";
 import { ZodError } from "zod";
 import { useMounted } from "@/hooks/use-mounted";
@@ -21,29 +21,22 @@ export default function ContactPage() {
     {
       icon: Mail,
       label: "Email",
-      value: "david@fitnesscoach.com",
-      href: "mailto:david@fitnesscoach.com",
-      color: "text-white/90",
-    },
-    {
-      icon: Globe,
-      label: "Website",
-      value: "www.davidfitness.com",
-      href: "https://www.davidfitness.com",
+      value: "david@davidkneževićfitness.com",
+      href: "mailto:david@davidkneževićfitness.com",
       color: "text-white/90",
     },
     {
       icon: Instagram,
       label: "Instagram",
-      value: "@davidfitness",
-      href: "https://instagram.com/davidfitness",
+      value: "@knezeviicdavid",
+      href: "https://instagram.com/knezeviicdavid",
       color: "text-white/90",
     },
     {
-      icon: Facebook,
-      label: "Facebook",
-      value: "David Fitness Coach",
-      href: "https://facebook.com/davidfitness",
+      icon: MessageSquare,
+      label: "Threads",
+      value: "@knezeviicdavid",
+      href: "https://threads.com/@knezeviicdavid",
       color: "text-white/90",
     },
   ];
@@ -51,12 +44,11 @@ export default function ContactPage() {
   if (!mounted) return null;
 
   return (
-    <div className="h-screen font-sans text-white relative overflow-hidden">
-
-      <main className="relative mx-auto h-full w-full max-w-2xl flex flex-col gap-4 sm:gap-6 px-4 sm:px-6 py-4 sm:py-8 z-10 overflow-y-auto">
+    <div className="min-h-screen font-sans text-white">
+      <main className="relative mx-auto max-w-2xl px-4 sm:px-6 py-12 sm:py-20 z-10">
         <BackButton />
         
-        <div className="mt-12 sm:mt-4 pt-0">
+        <div className="mt-8 sm:mt-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -77,7 +69,7 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Info Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
           {contactInfo.map((contact, idx) => {
             const Icon = contact.icon;
             return (
@@ -117,7 +109,7 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-700 hover:border-white/20 hover:bg-white/10"
+          className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-700 hover:border-white/20 hover:bg-white/10 mt-8"
         >
           <div className="flex items-center gap-3 mb-8">
             <div className="rounded-xl border border-white/20 bg-white/10 p-3">
