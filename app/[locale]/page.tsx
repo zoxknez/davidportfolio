@@ -8,8 +8,11 @@ import { SuccessStories } from "@/components/success-stories";
 import { CtaSection } from "@/components/cta-section";
 import { stats, testimonials, successStories } from "@/data/home-content";
 import { Target, Award, Users, Heart, Dumbbell, Clock } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
+  const t = useTranslations();
+
   const features = [
     {
       icon: Target,
@@ -84,8 +87,8 @@ export default function Home() {
         <div className="mx-auto max-w-4xl">
           <Testimonials 
             testimonials={testimonials} 
-            title="What Clients Say"
-            subtitle="Real feedback from real people"
+            title={t("testimonials.title")}
+            subtitle={t("testimonials.subtitle")}
           />
         </div>
       </section>

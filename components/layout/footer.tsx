@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/lib/navigation";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ROUTES, SITE, SOCIAL_LINKS, CONTACT } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 import {
   Dumbbell,
   Instagram,
@@ -18,36 +19,6 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
-const footerLinks = {
-  training: {
-    title: "Training",
-    links: [
-      { name: "1-on-1 Coaching", href: ROUTES.coaching.oneOnOne },
-      { name: "Group Classes", href: ROUTES.coaching.group },
-      { name: "All Programs", href: ROUTES.programs },
-      { name: "Find Your Program", href: ROUTES.quiz },
-    ],
-  },
-  resources: {
-    title: "Resources",
-    links: [
-      { name: "Media Gallery", href: ROUTES.media },
-      { name: "Latest News", href: ROUTES.news },
-      { name: "About David", href: "/about" },
-      { name: "FAQ", href: "/faq" },
-    ],
-  },
-  legal: {
-    title: "Legal",
-    links: [
-      { name: "Privacy Policy", href: "/privacy" },
-      { name: "Terms of Service", href: "/terms" },
-      { name: "Cookie Policy", href: "/cookies" },
-      { name: "Refund Policy", href: "/refund" },
-    ],
-  },
-};
-
 const socialLinks = [
   { name: "Instagram", icon: Instagram, href: SOCIAL_LINKS.instagram.url },
   { name: "Threads", icon: AtSign, href: SOCIAL_LINKS.threads.url },
@@ -56,9 +27,40 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const t = useTranslations();
   const [email, setEmail] = useState("");
   const [isSubscribing, setIsSubscribing] = useState(false);
   const currentYear = new Date().getFullYear();
+
+  const footerLinks = {
+    training: {
+      title: t("common.training"),
+      links: [
+        { name: t("navigation.oneOnOne"), href: ROUTES.coaching.oneOnOne },
+        { name: t("navigation.groupClasses"), href: ROUTES.coaching.group },
+        { name: t("common.programs"), href: ROUTES.programs },
+        { name: "Find Your Program", href: ROUTES.quiz },
+      ],
+    },
+    resources: {
+      title: "Resources",
+      links: [
+        { name: t("common.media"), href: ROUTES.media },
+        { name: t("common.news"), href: ROUTES.news },
+        { name: "About David", href: "/about" },
+        { name: "FAQ", href: "/faq" },
+      ],
+    },
+    legal: {
+      title: t("footer.legal"),
+      links: [
+        { name: t("footer.privacy"), href: "/privacy" },
+        { name: t("footer.terms"), href: "/terms" },
+        { name: t("footer.cookies"), href: "/cookies" },
+        { name: t("footer.refund"), href: "/refund" },
+      ],
+    },
+  };
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -160,7 +162,7 @@ export function Footer() {
             </Link>
             
             <p className="text-white/60 mb-6 max-w-sm">
-              From a small Serbian village to Dubai&apos;s elite fitness scene. Transform your body and mind with personalized coaching and a coach who truly understands the journey.
+              {t("footer.description")}
             </p>
 
             {/* Contact Info */}
@@ -174,7 +176,7 @@ export function Footer() {
               </a>
               <div className="flex items-center gap-3 text-white/60">
                 <MapPin className="h-4 w-4" />
-                <span>Dubai, UAE • Serbia</span>
+                <span>{t("footer.location")}</span>
               </div>
             </div>
 
@@ -230,7 +232,7 @@ export function Footer() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-white/50 text-center sm:text-left">
-              © {currentYear} {SITE.shortName}. All rights reserved.
+              © {currentYear} {SITE.shortName}. {t("footer.copyright")}
             </p>
             <p className="text-sm text-white/50 flex items-center gap-1">
               Made with <Heart className="h-4 w-4 text-red-500 fill-red-500" /> for fitness enthusiasts

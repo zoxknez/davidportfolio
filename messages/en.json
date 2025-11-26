@@ -1,0 +1,152 @@
+{
+  "common": {
+    "home": "Home",
+    "training": "Training",
+    "programs": "Programs",
+    "media": "Media",
+    "news": "News",
+    "contact": "Contact",
+    "login": "Login",
+    "signUp": "Sign Up",
+    "signUpFree": "Sign Up Free",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "viewAll": "View All",
+    "readMore": "Read More",
+    "sendMessage": "Send Message",
+    "sending": "Sending...",
+    "loading": "Loading...",
+    "back": "Back",
+    "backToHome": "Back to Home"
+  },
+  "navigation": {
+    "oneOnOne": "1-on-1 Coaching",
+    "oneOnOneDesc": "Personalized training plans",
+    "groupClasses": "Group Classes",
+    "groupClassesDesc": "Train with a community"
+  },
+  "hero": {
+    "badge": "Elite Fitness Coaching",
+    "title": "Transform Your Body,",
+    "titleHighlight": "Transform Your Life",
+    "subtitle": "Professional fitness coaching from Dubai. Personalized training programs designed to help you achieve extraordinary results.",
+    "cta": "Start Your Journey",
+    "secondaryCta": "View Programs"
+  },
+  "stats": {
+    "clients": "Clients Transformed",
+    "experience": "Years Experience",
+    "rating": "Client Rating",
+    "programs": "Training Programs"
+  },
+  "about": {
+    "badge": "My Journey",
+    "title": "From Struggle to Success",
+    "subtitle": "The story of transformation, discipline, and never giving up",
+    "origin": "Born in a small Serbian village, I learned early that success requires sacrifice and unwavering determination.",
+    "philosophy": "Consistency Over Talent",
+    "philosophyDesc": "I believe that consistent effort beats natural talent every time. This philosophy has guided me from a small village in Serbia to becoming an elite fitness coach in Dubai.",
+    "journeyTitle": "The Journey",
+    "milestones": {
+      "village": "Small Village, Big Dreams",
+      "villageDesc": "Growing up in a Serbian village, I discovered my passion for fitness and helping others transform their lives.",
+      "university": "University Years",
+      "universityDesc": "Moved to Novi Sad for education, where I began my journey into professional fitness training.",
+      "firstJob": "First Training Center",
+      "firstJobDesc": "Started at Invictus Training Center, learning the fundamentals of professional coaching.",
+      "growth": "Professional Growth",
+      "growthDesc": "Joined Profitnes Gym as head trainer, developing my signature training methodology.",
+      "dubai": "Dubai Chapter",
+      "dubaiDesc": "Made the bold move to Dubai, bringing my expertise to an international clientele.",
+      "elite": "Elite Coaching",
+      "eliteDesc": "Now helping clients worldwide achieve their fitness goals through personalized programs."
+    }
+  },
+  "testimonials": {
+    "title": "What Clients Say",
+    "subtitle": "Real feedback from real people"
+  },
+  "programs": {
+    "title": "Training Programs",
+    "subtitle": "Choose the program that fits your goals",
+    "featuredBadge": "Featured Program",
+    "duration": "Duration",
+    "level": "Level",
+    "weeks": "weeks",
+    "viewDetails": "View Details",
+    "buyNow": "Buy Now"
+  },
+  "contact": {
+    "badge": "Start Your Journey",
+    "title": "Get in Touch",
+    "subtitle": "Ready to transform? Let's discuss your training goals and find the perfect program for you.",
+    "formTitle": "Send a Message",
+    "formSubtitle": "We'll get back to you within 24 hours",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell me about your fitness goals...",
+    "successTitle": "Message sent!",
+    "successMessage": "Thank you for contacting us. We'll get back to you soon.",
+    "errorTitle": "Failed to send message",
+    "errorMessage": "Please try again later."
+  },
+  "footer": {
+    "description": "Elite fitness coaching from Dubai. Transform your body and mind with personalized training programs.",
+    "quickLinks": "Quick Links",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy",
+    "refund": "Refund Policy",
+    "location": "Dubai, UAE",
+    "copyright": "All rights reserved."
+  },
+  "coaching": {
+    "oneOnOne": {
+      "badge": "Premium Coaching",
+      "title": "1-on-1 Personal Training",
+      "subtitle": "Get personalized attention and customized workout plans tailored specifically to your goals, fitness level, and schedule.",
+      "includes": "What's Included",
+      "feature1": "Personalized workout plans",
+      "feature2": "Nutrition guidance",
+      "feature3": "Weekly progress tracking",
+      "feature4": "24/7 messaging support",
+      "feature5": "Form correction videos",
+      "feature6": "Monthly program updates"
+    },
+    "group": {
+      "badge": "Community Training",
+      "title": "Group Training Sessions",
+      "subtitle": "Join our energetic group sessions and experience the power of training together. Motivation, accountability, and fun guaranteed.",
+      "includes": "Session Types",
+      "feature1": "HIIT & Conditioning",
+      "feature2": "Strength Training",
+      "feature3": "Functional Fitness",
+      "feature4": "Core & Mobility",
+      "feature5": "Partner Workouts",
+      "feature6": "Challenge Days"
+    }
+  },
+  "faq": {
+    "badge": "Got Questions?",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about our training programs and coaching services."
+  },
+  "auth": {
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to access your dashboard",
+    "registerTitle": "Create Account",
+    "registerSubtitle": "Start your fitness journey today",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Full Name",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "orContinueWith": "Or continue with"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "common": {
+    "home": "Početna",
+    "training": "Trening",
+    "programs": "Programi",
+    "media": "Mediji",
+    "news": "Vesti",
+    "contact": "Kontakt",
+    "login": "Prijava",
+    "signUp": "Registracija",
+    "signUpFree": "Besplatna Registracija",
+    "learnMore": "Saznaj Više",
+    "getStarted": "Započni",
+    "viewAll": "Pogledaj Sve",
+    "readMore": "Pročitaj Više",
+    "sendMessage": "Pošalji Poruku",
+    "sending": "Slanje...",
+    "loading": "Učitavanje...",
+    "back": "Nazad",
+    "backToHome": "Nazad na Početnu"
+  },
+  "navigation": {
+    "oneOnOne": "1-na-1 Trening",
+    "oneOnOneDesc": "Personalizovani planovi treninga",
+    "groupClasses": "Grupni Treninzi",
+    "groupClassesDesc": "Treniraj u zajednici"
+  },
+  "hero": {
+    "badge": "Elitni Fitnes Trening",
+    "title": "Transformiši Svoje Telo,",
+    "titleHighlight": "Transformiši Svoj Život",
+    "subtitle": "Profesionalni fitnes trening iz Dubaija. Personalizovani programi treninga dizajnirani da ti pomognu da postigneš izvanredne rezultate.",
+    "cta": "Započni Svoje Putovanje",
+    "secondaryCta": "Pogledaj Programe"
+  },
+  "stats": {
+    "clients": "Transformisanih Klijenata",
+    "experience": "Godina Iskustva",
+    "rating": "Ocena Klijenata",
+    "programs": "Programa Treninga"
+  },
+  "about": {
+    "badge": "Moje Putovanje",
+    "title": "Od Borbe do Uspeha",
+    "subtitle": "Priča o transformaciji, disciplini i nikad ne odustajanju",
+    "origin": "Rođen u malom srpskom selu, rano sam naučio da uspeh zahteva žrtvu i nepokolebljivu odlučnost.",
+    "philosophy": "Doslednost Iznad Talenta",
+    "philosophyDesc": "Verujem da dosledan trud uvek pobedi prirodni talenat. Ova filozofija me je vodila od malog sela u Srbiji do elitnog fitnes trenera u Dubaiju.",
+    "journeyTitle": "Putovanje",
+    "milestones": {
+      "village": "Malo Selo, Veliki Snovi",
+      "villageDesc": "Odrastajući u srpskom selu, otkrio sam svoju strast za fitnesom i pomaganjem drugima da transformišu svoje živote.",
+      "university": "Studentski Dani",
+      "universityDesc": "Preselio sam se u Novi Sad na studije, gde sam započeo svoje putovanje u profesionalni fitnes trening.",
+      "firstJob": "Prvi Trening Centar",
+      "firstJobDesc": "Počeo sam u Invictus Training Centru, učeći osnove profesionalnog treniranja.",
+      "growth": "Profesionalni Rast",
+      "growthDesc": "Pridružio se Profitnes teretani kao glavni trener, razvijajući svoju prepoznatljivu metodologiju treninga.",
+      "dubai": "Dubai Poglavlje",
+      "dubaiDesc": "Napravio hrabar korak ka Dubaiju, donoseći svoju ekspertizu međunarodnoj klijenteli.",
+      "elite": "Elitni Trening",
+      "eliteDesc": "Sada pomažem klijentima širom sveta da postignu svoje fitnes ciljeve kroz personalizovane programe."
+    }
+  },
+  "testimonials": {
+    "title": "Šta Klijenti Kažu",
+    "subtitle": "Pravi komentari pravih ljudi"
+  },
+  "programs": {
+    "title": "Programi Treninga",
+    "subtitle": "Izaberi program koji odgovara tvojim ciljevima",
+    "featuredBadge": "Istaknuti Program",
+    "duration": "Trajanje",
+    "level": "Nivo",
+    "weeks": "nedelja",
+    "viewDetails": "Pogledaj Detalje",
+    "buyNow": "Kupi Sada"
+  },
+  "contact": {
+    "badge": "Započni Svoje Putovanje",
+    "title": "Kontaktiraj Nas",
+    "subtitle": "Spreman za transformaciju? Hajde da razgovaramo o tvojim ciljevima i pronađemo savršen program za tebe.",
+    "formTitle": "Pošalji Poruku",
+    "formSubtitle": "Odgovorićemo u roku od 24 sata",
+    "nameLabel": "Ime",
+    "namePlaceholder": "Tvoje puno ime",
+    "emailLabel": "Email",
+    "emailPlaceholder": "tvoj.email@primer.com",
+    "messageLabel": "Poruka",
+    "messagePlaceholder": "Reci mi o svojim fitnes ciljevima...",
+    "successTitle": "Poruka poslata!",
+    "successMessage": "Hvala što si nas kontaktirao. Javićemo ti se uskoro.",
+    "errorTitle": "Slanje nije uspelo",
+    "errorMessage": "Molimo pokušaj ponovo kasnije."
+  },
+  "footer": {
+    "description": "Elitni fitnes trening iz Dubaija. Transformiši svoje telo i um sa personalizovanim programima treninga.",
+    "quickLinks": "Brzi Linkovi",
+    "legal": "Pravno",
+    "privacy": "Politika Privatnosti",
+    "terms": "Uslovi Korišćenja",
+    "cookies": "Politika Kolačića",
+    "refund": "Politika Povraćaja",
+    "location": "Dubai, UAE",
+    "copyright": "Sva prava zadržana."
+  },
+  "coaching": {
+    "oneOnOne": {
+      "badge": "Premium Trening",
+      "title": "1-na-1 Personalni Trening",
+      "subtitle": "Dobij personalizovanu pažnju i prilagođene planove vežbanja kreirane specifično za tvoje ciljeve, nivo fitnes i raspored.",
+      "includes": "Šta je Uključeno",
+      "feature1": "Personalizovani planovi vežbanja",
+      "feature2": "Saveti za ishranu",
+      "feature3": "Nedeljno praćenje napretka",
+      "feature4": "24/7 podrška putem poruka",
+      "feature5": "Video korekcije forme",
+      "feature6": "Mesečna ažuriranja programa"
+    },
+    "group": {
+      "badge": "Trening u Zajednici",
+      "title": "Grupni Treninzi",
+      "subtitle": "Pridruži se našim energičnim grupnim sesijama i iskusi moć zajedničkog treniranja. Motivacija, odgovornost i zabava garantovani.",
+      "includes": "Tipovi Sesija",
+      "feature1": "HIIT i Kondicioni",
+      "feature2": "Trening Snage",
+      "feature3": "Funkcionalni Fitnes",
+      "feature4": "Core i Mobilnost",
+      "feature5": "Partnerski Treninzi",
+      "feature6": "Dani Izazova"
+    }
+  },
+  "faq": {
+    "badge": "Imaš Pitanja?",
+    "title": "Često Postavljana Pitanja",
+    "subtitle": "Pronađi odgovore na česta pitanja o našim programima treninga i uslugama."
+  },
+  "auth": {
+    "loginTitle": "Dobrodošao Nazad",
+    "loginSubtitle": "Prijavi se da pristupiš svom nalogu",
+    "registerTitle": "Kreiraj Nalog",
+    "registerSubtitle": "Započni svoje fitnes putovanje danas",
+    "email": "Email",
+    "password": "Lozinka",
+    "confirmPassword": "Potvrdi Lozinku",
+    "name": "Puno Ime",
+    "forgotPassword": "Zaboravio si lozinku?",
+    "noAccount": "Nemaš nalog?",
+    "hasAccount": "Već imaš nalog?",
+    "orContinueWith": "Ili nastavi sa"
+  }
+}

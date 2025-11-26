@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Link } from "@/lib/navigation";
 import { TrainingDropdown } from "@/components/training-dropdown";
 import { TypingEffect } from "@/components/typing-effect";
 import { heroContent } from "@/data/home-content";
@@ -9,9 +9,11 @@ import { useMounted } from "@/hooks/use-mounted";
 import { buttonStyles } from "@/lib/styles";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 export function Hero() {
   const mounted = useMounted();
+  const t = useTranslations();
 
   if (!mounted) return null;
 
@@ -26,7 +28,7 @@ export function Hero() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-xl">
             <Sparkles className="h-4 w-4 text-white/80 animate-pulse" />
-            <span className="text-xs sm:text-sm font-medium text-white/90">Premium Fitness Coaching</span>
+            <span className="text-xs sm:text-sm font-medium text-white/90">{t("hero.badge")}</span>
           </div>
         </motion.div>
 
@@ -72,7 +74,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          {heroContent.subtitle}
+          {t("hero.subtitle")}
         </motion.p>
       </div>
 
@@ -89,7 +91,7 @@ export function Hero() {
           asChild
         >
           <Link href="/quiz" className="flex items-center gap-2">
-            Start Training
+            {t("hero.cta")}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </Button>
@@ -98,7 +100,7 @@ export function Hero() {
           className={`${buttonStyles.primary} w-full sm:w-auto h-12`}
           asChild
         >
-          <Link href="/programs">View Programs</Link>
+          <Link href="/programs">{t("hero.secondaryCta")}</Link>
         </Button>
       </motion.div>
 
@@ -111,13 +113,13 @@ export function Hero() {
       >
         <TrainingDropdown />
         <Button variant="ghost" className={buttonStyles.primary} asChild>
-          <Link href="/media">Media</Link>
+          <Link href="/media">{t("common.media")}</Link>
         </Button>
         <Button variant="ghost" className={buttonStyles.primary} asChild>
-          <Link href="/news">News</Link>
+          <Link href="/news">{t("common.news")}</Link>
         </Button>
         <Button variant="ghost" className={buttonStyles.primary} asChild>
-          <Link href="/contact">Contact</Link>
+          <Link href="/contact">{t("common.contact")}</Link>
         </Button>
       </motion.div>
     </section>

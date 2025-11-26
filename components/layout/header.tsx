@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/lib/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ROUTES, SITE } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 import {
   Menu,
   X,
@@ -25,29 +25,30 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const navigationItems = [
-  { name: "Home", href: ROUTES.home, icon: Home },
-  {
-    name: "Training",
-    icon: Dumbbell,
-    children: [
-      { name: "1-on-1 Coaching", href: ROUTES.coaching.oneOnOne, icon: User, description: "Personalized training plans" },
-      { name: "Group Classes", href: ROUTES.coaching.group, icon: Users, description: "Train with a community" },
-    ],
-  },
-  { name: "Programs", href: ROUTES.programs, icon: Sparkles },
-  { name: "Media", href: ROUTES.media, icon: Play },
-  { name: "News", href: ROUTES.news, icon: Newspaper },
-  { name: "Contact", href: ROUTES.contact, icon: Mail },
-];
-
 export function Header() {
+  const t = useTranslations();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const lastScrollY = useRef(0);
+
+  const navigationItems = [
+    { name: t("common.home"), href: ROUTES.home, icon: Home },
+    {
+      name: t("common.training"),
+      icon: Dumbbell,
+      children: [
+        { name: t("navigation.oneOnOne"), href: ROUTES.coaching.oneOnOne, icon: User, description: t("navigation.oneOnOneDesc") },
+        { name: t("navigation.groupClasses"), href: ROUTES.coaching.group, icon: Users, description: t("navigation.groupClassesDesc") },
+      ],
+    },
+    { name: t("common.programs"), href: ROUTES.programs, icon: Sparkles },
+    { name: t("common.media"), href: ROUTES.media, icon: Play },
+    { name: t("common.news"), href: ROUTES.news, icon: Newspaper },
+    { name: t("common.contact"), href: ROUTES.contact, icon: Mail },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -204,7 +205,7 @@ export function Header() {
               >
                 <Link href="/auth/login">
                   <LogIn className="h-4 w-4 mr-2" />
-                  Login
+                  {t("common.login")}
                 </Link>
               </Button>
               <Button
@@ -214,7 +215,7 @@ export function Header() {
               >
                 <Link href="/auth/register">
                   <UserPlus className="h-4 w-4 mr-2" />
-                  Sign Up
+                  {t("common.signUp")}
                 </Link>
               </Button>
             </div>
@@ -312,7 +313,7 @@ export function Header() {
                     >
                       <Link href="/auth/login">
                         <LogIn className="h-4 w-4 mr-2" />
-                        Login
+                        {t("common.login")}
                       </Link>
                     </Button>
                     <Button
@@ -321,7 +322,7 @@ export function Header() {
                     >
                       <Link href="/auth/register">
                         <UserPlus className="h-4 w-4 mr-2" />
-                        Sign Up Free
+                        {t("common.signUpFree")}
                       </Link>
                     </Button>
                   </div>
