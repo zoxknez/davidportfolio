@@ -99,9 +99,9 @@ export function Testimonials({
         transition={{ duration: 0.6, delay: 0.2 }}
         className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 sm:p-10 transition-all duration-500 overflow-hidden"
       >
-        {/* Quote icon */}
-        <div className="absolute top-6 left-6 sm:top-8 sm:left-8 opacity-20">
-          <Quote className="h-12 w-12 sm:h-16 sm:w-16 text-white" />
+        {/* Quote icon - positioned in top-right corner to avoid text overlap */}
+        <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 opacity-10">
+          <Quote className="h-20 w-20 sm:h-28 sm:w-28 text-white rotate-180" />
         </div>
 
         {/* Content */}
