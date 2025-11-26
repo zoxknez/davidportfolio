@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/validations";
 import { applyRateLimit } from "@/lib/rate-limit";
-import { RATE_LIMITS } from "@/lib/constants";
+import { RATE_LIMITS, CONTACT } from "@/lib/constants";
 import { ZodError } from "zod";
+import { resend, FROM_EMAIL, sendContactResponseEmail } from "@/lib/email";
+import { prisma } from "@/lib/db";
 
 /**
  * POST /api/contact
@@ -23,22 +25,66 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = contactFormSchema.parse(body);
 
-    // TODO: Implement actual email sending logic
-    // Example using a service like SendGrid, Resend, or Nodemailer:
-    // await sendEmail({
-    //   to: CONTACT.email,
-    //   from: validatedData.email,
-    //   subject: `Contact form submission from ${validatedData.name}`,
-    //   text: validatedData.message,
-    // });
-
-    // For now, just log the data (remove in production)
-    if (process.env.NODE_ENV === "development") {
-      console.log("📧 Contact form submission:", validatedData);
+    // Save to database
+    try {
+      await prisma.contactSubmission.create({
+        data: {
+          name: validatedData.name,
+          email: validatedData.email,
+          message: validatedData.message,
+          status: "NEW",
+        },
+      });
+    } catch (dbError) {
+      console.error("Failed to save contact submission to DB:", dbError);
+      // Continue anyway - email sending is more important
     }
 
-    // Simulate email sending delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Send notification email to admin
+    try {
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to: CONTACT.email,
+        subject: `New Contact Form: ${validatedData.name}`,
+        html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>New Contact Form Submission</title>
+</head>
+<body style="margin: 0; padding: 20px; background-color: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h2 style="margin: 0 0 20px; color: #333;">New Contact Form Submission</h2>
+    
+    <div style="background: #f9f9f9; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+      <p style="margin: 0 0 10px;"><strong>Name:</strong> ${validatedData.name}</p>
+      <p style="margin: 0 0 10px;"><strong>Email:</strong> <a href="mailto:${validatedData.email}">${validatedData.email}</a></p>
+    </div>
+    
+    <div style="background: #f9f9f9; border-radius: 8px; padding: 20px;">
+      <p style="margin: 0 0 10px;"><strong>Message:</strong></p>
+      <p style="margin: 0; white-space: pre-wrap;">${validatedData.message}</p>
+    </div>
+    
+    <p style="margin: 20px 0 0; color: #666; font-size: 14px;">
+      Received at: ${new Date().toLocaleString()}
+    </p>
+  </div>
+</body>
+</html>
+        `,
+      });
+    } catch (emailError) {
+      console.error("Failed to send admin notification email:", emailError);
+    }
+
+    // Send auto-response to user
+    try {
+      await sendContactResponseEmail(validatedData.email, validatedData.name);
+    } catch (autoReplyError) {
+      console.error("Failed to send auto-reply email:", autoReplyError);
+    }
 
     return NextResponse.json(
       {

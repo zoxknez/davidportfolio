@@ -8,13 +8,16 @@
 // =============================================================================
 
 export const SITE = {
-  name: "David Knežević — Fitness Coach",
+  name: "David Knežević — Elite Fitness Coach",
   shortName: "David Knežević",
   description:
-    "Elite coaching, programs, videos, and personalized training plans. Transform your fitness journey with expert guidance.",
-  tagline: "Elite coaching. Minimal distractions.",
+    "From a small Serbian village to Dubai's elite fitness scene. Transform your body and mindset with David Knežević — certified coach, mentor, and living proof that consistency beats talent.",
+  tagline: "Consistency Over Talent. Transform Your Life.",
   author: "David Knežević",
   locale: "en_US",
+  url: "https://www.davidfitness.com",
+  origin: "Serbia",
+  currentLocation: "Dubai, UAE",
 } as const;
 
 // =============================================================================
@@ -24,6 +27,8 @@ export const SITE = {
 export const CONTACT = {
   email: "david@fitnesscoach.com",
   website: "www.davidfitness.com",
+  location: "Dubai, United Arab Emirates",
+  originCity: "Novi Sad, Serbia",
 } as const;
 
 // =============================================================================
@@ -32,19 +37,24 @@ export const CONTACT = {
 
 export const SOCIAL_LINKS = {
   instagram: {
-    url: "https://instagram.com/davidfitness",
-    handle: "@davidfitness",
+    url: "https://instagram.com/knezeviicdavid",
+    handle: "@knezeviicdavid",
     label: "Instagram",
   },
-  facebook: {
-    url: "https://facebook.com/davidfitness",
-    label: "Facebook",
-    name: "David Fitness Coach",
+  threads: {
+    url: "https://threads.com/@knezeviicdavid",
+    handle: "@knezeviicdavid",
+    label: "Threads",
   },
-  twitter: {
-    url: "https://twitter.com/davidfitness",
-    handle: "@davidfitness",
-    label: "Twitter",
+  facebook: {
+    url: "https://facebook.com/knezeviicdavid",
+    label: "Facebook",
+    name: "David Knežević",
+  },
+  youtube: {
+    url: "https://youtube.com/@knezeviicdavid",
+    handle: "@knezeviicdavid",
+    label: "YouTube",
   },
 } as const;
 
@@ -78,14 +88,16 @@ export const SEO = {
   titleTemplate: "%s | David Knežević",
   defaultDescription: SITE.description,
   keywords: [
-    "fitness coach",
-    "personal training",
-    "workout programs",
-    "strength training",
-    "fitness coaching",
+    "fitness coach Dubai",
+    "personal training UAE",
+    "Serbian fitness coach",
     "David Knežević",
-    "HYROX training",
-    "functional bodybuilding",
+    "online coaching",
+    "body transformation",
+    "elite fitness training",
+    "Dubai personal trainer",
+    "fitness mentor",
+    "strength training Dubai",
   ],
   ogImage: {
     url: "/og-image.jpg",

@@ -1,17 +1,19 @@
 /**
  * Home page content configuration
  * Edit this file to customize the content on the home page
+ * Based on David Knežević's real journey from Serbia to Dubai
  */
 
 export const heroContent = {
   dynamicPhrases: [
-    "Transform Your Body",
-    "Build Strength",
-    "Achieve Your Goals",
+    "Consistency Over Talent",
+    "Transform Your Body & Mind",
+    "From Serbia to Dubai",
     "Elite Coaching",
-    "Personalized Training",
+    "Your Background Doesn't Define Your Future",
+    "Build Discipline, Build Results",
   ],
-  subtitle: "Personalized programs, expert guidance, and proven results. Start your transformation journey today.",
+  subtitle: "From a small Serbian village to Dubai's elite fitness scene. Personalized programs, proven methods, and a coach who truly understands the journey.",
 };
 
 export const stats = [
@@ -19,19 +21,19 @@ export const stats = [
     value: 500, 
     suffix: "+", 
     label: "Clients Transformed", 
-    description: "And counting" 
+    description: "Globally" 
   },
   { 
-    value: 10, 
-    suffix: "+", 
-    label: "Years Experience", 
-    description: "In fitness industry" 
+    value: 22, 
+    suffix: "", 
+    label: "Financially Independent", 
+    description: "Age achieved" 
   },
   { 
-    value: 50, 
-    suffix: "+", 
-    label: "Programs Created", 
-    description: "Custom & pre-made" 
+    value: 2, 
+    suffix: "", 
+    label: "Countries", 
+    description: "Serbia & Dubai" 
   },
   { 
     value: 98, 

@@ -1,0 +1,465 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================================
+// USER & AUTHENTICATION
+// ============================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]
+  bookings      Booking[]
+  progress      ProgramProgress[]
+  reviews       Review[]
+  newsletter    Newsletter?
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+enum Role {
+  USER
+  ADMIN
+  COACH
+}
+
+// ============================================================================
+// PROGRAMS & PRODUCTS
+// ============================================================================
+
+model Program {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String   @db.Text
+  shortDescription String?
+  price       Decimal  @db.Decimal(10, 2)
+  currency    String   @default("USD")
+  duration    String   // e.g., "8 weeks", "12 weeks"
+  level       Level    @default(BEGINNER)
+  category    Category @default(GENERAL)
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  
+  // Content
+  features    String[]
+  benefits    String[]
+  includes    String[]
+  
+  // Media
+  thumbnail   String?
+  images      String[]
+  videoUrl    String?
+  
+  // Stats
+  totalWorkouts Int     @default(0)
+  averageRating Decimal @default(0) @db.Decimal(2, 1)
+  reviewCount   Int     @default(0)
+  enrollmentCount Int   @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  workouts    Workout[]
+  orders      OrderItem[]
+  progress    ProgramProgress[]
+  reviews     Review[]
+
+  @@map("programs")
+}
+
+model Workout {
+  id          String   @id @default(cuid())
+  programId   String
+  dayNumber   Int
+  weekNumber  Int
+  title       String
+  description String?  @db.Text
+  duration    Int      // minutes
+  exercises   Json     // Array of exercise objects
+  videoUrl    String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  program     Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  progress    WorkoutProgress[]
+
+  @@map("workouts")
+}
+
+enum Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum Category {
+  GENERAL
+  STRENGTH
+  HYPERTROPHY
+  FAT_LOSS
+  PERFORMANCE
+  HYROX
+  BODYBUILDING
+}
+
+// ============================================================================
+// COACHING & BOOKING
+// ============================================================================
+
+model CoachingPackage {
+  id          String   @id @default(cuid())
+  name        String
+  type        CoachingType
+  description String   @db.Text
+  price       Decimal  @db.Decimal(10, 2)
+  currency    String   @default("USD")
+  sessions    Int      // Number of sessions included
+  duration    String   // e.g., "1 month", "3 months"
+  features    String[]
+  popular     Boolean  @default(false)
+  published   Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orders      OrderItem[]
+  bookings    Booking[]
+
+  @@map("coaching_packages")
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  userId      String
+  packageId   String
+  date        DateTime
+  time        String        // e.g., "14:00"
+  duration    Int           // minutes
+  status      BookingStatus @default(PENDING)
+  notes       String?       @db.Text
+  meetingUrl  String?       // Zoom/Google Meet link
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package     CoachingPackage @relation(fields: [packageId], references: [id])
+
+  @@map("bookings")
+}
+
+enum CoachingType {
+  ONE_ON_ONE
+  GROUP
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+// ============================================================================
+// ORDERS & PAYMENTS
+// ============================================================================
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  orderNumber     String      @unique
+  status          OrderStatus @default(PENDING)
+  subtotal        Decimal     @db.Decimal(10, 2)
+  tax             Decimal     @default(0) @db.Decimal(10, 2)
+  discount        Decimal     @default(0) @db.Decimal(10, 2)
+  total           Decimal     @db.Decimal(10, 2)
+  currency        String      @default("USD")
+  
+  // Stripe
+  stripePaymentIntentId String?
+  stripeCustomerId      String?
+  
+  // Billing
+  billingName     String?
+  billingEmail    String?
+  billingAddress  Json?
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  user            User        @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  programId   String?
+  packageId   String?
+  name        String
+  price       Decimal  @db.Decimal(10, 2)
+  quantity    Int      @default(1)
+  
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  program     Program? @relation(fields: [programId], references: [id])
+  package     CoachingPackage? @relation(fields: [packageId], references: [id])
+
+  @@map("order_items")
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+// ============================================================================
+// PROGRESS TRACKING
+// ============================================================================
+
+model ProgramProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  programId   String
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+  currentWeek Int      @default(1)
+  currentDay  Int      @default(1)
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program     Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  workouts    WorkoutProgress[]
+
+  @@unique([userId, programId])
+  @@map("program_progress")
+}
+
+model WorkoutProgress {
+  id                String    @id @default(cuid())
+  programProgressId String
+  workoutId         String
+  completedAt       DateTime  @default(now())
+  duration          Int?      // actual duration in minutes
+  notes             String?   @db.Text
+  exerciseData      Json?     // Logged weights, reps, etc.
+  rating            Int?      // 1-5 difficulty rating
+  
+  programProgress   ProgramProgress @relation(fields: [programProgressId], references: [id], onDelete: Cascade)
+  workout           Workout   @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+
+  @@unique([programProgressId, workoutId])
+  @@map("workout_progress")
+}
+
+// ============================================================================
+// REVIEWS & TESTIMONIALS
+// ============================================================================
+
+model Review {
+  id          String   @id @default(cuid())
+  userId      String
+  programId   String
+  rating      Int      // 1-5
+  title       String?
+  content     String   @db.Text
+  verified    Boolean  @default(false)
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program     Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, programId])
+  @@map("reviews")
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  name        String
+  role        String?  // e.g., "Fitness Enthusiast"
+  content     String   @db.Text
+  rating      Int      @default(5)
+  image       String?
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+// ============================================================================
+// BLOG & NEWS
+// ============================================================================
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  excerpt     String    @db.Text
+  content     String    @db.Text
+  thumbnail   String?
+  author      String    @default("David Knežević")
+  category    BlogCategory @default(FITNESS)
+  tags        String[]
+  featured    Boolean   @default(false)
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  readTime    Int       @default(5) // minutes
+  views       Int       @default(0)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("blog_posts")
+}
+
+enum BlogCategory {
+  FITNESS
+  NUTRITION
+  LIFESTYLE
+  MOTIVATION
+  TRAINING_TIPS
+  SUCCESS_STORIES
+}
+
+// ============================================================================
+// NEWSLETTER & LEADS
+// ============================================================================
+
+model Newsletter {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  userId      String?  @unique
+  subscribed  Boolean  @default(true)
+  source      String?  // e.g., "footer", "popup", "checkout"
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("newsletters")
+}
+
+model ContactSubmission {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  subject     String?
+  message     String   @db.Text
+  status      ContactStatus @default(NEW)
+  respondedAt DateTime?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("contact_submissions")
+}
+
+enum ContactStatus {
+  NEW
+  IN_PROGRESS
+  RESPONDED
+  CLOSED
+}
+
+// ============================================================================
+// MEDIA GALLERY
+// ============================================================================
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  YOUTUBE
+}
+
+model Media {
+  id          String    @id @default(cuid())
+  type        MediaType
+  url         String
+  thumbnail   String?
+  title       String?
+  description String?
+  category    String?
+  featured    Boolean   @default(false)
+  published   Boolean   @default(true)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("media")
+}

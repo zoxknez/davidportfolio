@@ -7,6 +7,10 @@ import { clientEnv } from "@/lib/env";
 import { reportWebVitals } from "@/lib/web-vitals";
 import { Toaster } from "sonner";
 import { AnimatedBackground } from "@/components/animated-background";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { HomePageSchemas } from "@/lib/json-ld";
 
 // Export reportWebVitals for Next.js to use
 export { reportWebVitals };
@@ -104,39 +108,53 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="bg-black">
+      <head>
+        <HomePageSchemas />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-transparent`}
         suppressHydrationWarning
       >
-        <AnimatedBackground />
-        {/* Skip to main content link for accessibility */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-black"
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
         >
-          Skip to main content
-        </a>
-        
-        <div id="main-content" tabIndex={-1}>
-          {children}
-        </div>
-        
-        <Toaster 
-          position="top-right"
-          richColors
-          closeButton
-          theme="dark"
-          toastOptions={{
-            style: {
-              background: "rgba(255, 255, 255, 0.05)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              color: "rgba(255, 255, 255, 0.9)",
-            },
-          }}
-        />
-        <ScrollToTop />
-        <Analytics />
+          <AnimatedBackground />
+          {/* Skip to main content link for accessibility */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-black"
+          >
+            Skip to main content
+          </a>
+          
+          <Header />
+          
+          <main id="main-content" tabIndex={-1} className="min-h-screen pt-16">
+            {children}
+          </main>
+          
+          <Footer />
+          
+          <Toaster 
+            position="top-right"
+            richColors
+            closeButton
+            theme="dark"
+            toastOptions={{
+              style: {
+                background: "rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                color: "rgba(255, 255, 255, 0.9)",
+              },
+            }}
+          />
+          <ScrollToTop />
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   );
