@@ -52,16 +52,17 @@ export function AnimatedBackground() {
     }
   }, [shouldPlayVideo]);
 
-  if (!isMounted) return <div className="fixed inset-0 bg-black -z-50" />;
+  if (!isMounted) return <div className="fixed inset-0 -z-50 bg-background" />;
 
   return (
-    <div className="fixed inset-0 -z-50 overflow-hidden bg-black">
+    <div className="fixed inset-0 -z-50 overflow-hidden bg-background">
       {/* Static gradient fallback while video loads */}
       <div 
-        className={`absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800 transition-opacity duration-1000 ${
+        className={`absolute inset-0 bg-[linear-gradient(125deg,rgba(239,68,68,0.18),transparent_28%),linear-gradient(35deg,transparent_38%,rgba(69,240,194,0.12)_56%,transparent_74%),linear-gradient(135deg,#07090d_0%,#101610_45%,#090b10_100%)] transition-opacity duration-1000 ${
           videoLoaded ? "opacity-0" : "opacity-100"
         }`} 
       />
+      <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(255,255,255,0.06)_0_1px,transparent_1px_18px)] opacity-20" />
       
       {/* Video - only render when should play */}
       {shouldPlayVideo && (
@@ -74,7 +75,7 @@ export function AnimatedBackground() {
           preload="metadata"
           onLoadedData={() => setVideoLoaded(true)}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-            videoLoaded ? "opacity-40" : "opacity-0"
+            videoLoaded ? "opacity-52 saturate-[0.9] contrast-[1.14]" : "opacity-0"
           }`}
         >
           {/* Lower quality for mobile, higher for desktop */}
@@ -90,10 +91,11 @@ export function AnimatedBackground() {
         </video>
       )}
       
-      <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/90 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,7,11,0.94),rgba(5,7,11,0.78)_38%,rgba(5,7,11,0.93)),linear-gradient(180deg,rgba(5,7,11,0.76),rgba(5,7,11,0.5)_36%,rgba(5,7,11,0.96)_88%)] backdrop-blur-[1px]" />
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[linear-gradient(180deg,transparent,rgba(6,8,12,0.96))]" />
       {/* Noise texture effect using CSS */}
       <div 
-        className="absolute inset-0 opacity-[0.03] mix-blend-overlay pointer-events-none"
+        className="pointer-events-none absolute inset-0 opacity-[0.045] mix-blend-overlay"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}

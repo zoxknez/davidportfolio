@@ -2,6 +2,7 @@
 
 import { AnimatedCounter } from "./animated-counter";
 import { motion } from "framer-motion";
+import type { CSSProperties } from "react";
 
 interface Stat {
   value: number;
@@ -18,30 +19,40 @@ interface StatsSectionProps {
 }
 
 export function StatsSection({ stats, title, subtitle }: StatsSectionProps) {
+  const accents = [
+    "oklch(0.66 0.22 31)",
+    "oklch(0.79 0.16 170)",
+    "oklch(0.86 0.18 112)",
+    "oklch(0.72 0.18 258)",
+  ];
+
   return (
     <div className="w-full">
       {(title || subtitle) && (
         <motion.div 
-          className="text-center mb-12"
+          className="mb-10 grid gap-6 lg:grid-cols-[0.8fr_1fr] lg:items-end"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6 }}
         >
-          {title && (
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">
-              {title}
-            </h2>
-          )}
+          <div>
+            <div className="section-kicker">Measured progress</div>
+            {title && (
+              <h2 className="section-title">
+                {title}
+              </h2>
+            )}
+          </div>
           {subtitle && (
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+            <p className="section-copy lg:justify-self-end">
               {subtitle}
             </p>
           )}
         </motion.div>
       )}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {stats.map((stat, index) => (
           <motion.div
             key={index}
@@ -51,12 +62,24 @@ export function StatsSection({ stats, title, subtitle }: StatsSectionProps) {
             transition={{ delay: index * 0.1, duration: 0.5 }}
             className="group"
           >
-            <div className="relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 sm:p-8 transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:shadow-xl hover:shadow-white/5 hover:-translate-y-1">
-              {/* Animated glow on hover */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
+            <div
+              className="tactical-card h-full p-5 transition-all duration-500 hover:scale-[1.02] sm:p-7"
+              style={{ "--glass-accent": accents[index % accents.length] } as CSSProperties}
+            >
+              <div
+                className="absolute inset-x-0 top-0 h-1.5 shadow-lg"
+                style={{
+                  background:
+                    index % 2 === 0
+                      ? "linear-gradient(90deg, oklch(0.66 0.22 31), transparent)"
+                      : "linear-gradient(90deg, oklch(0.79 0.16 170), transparent)",
+                  boxShadow: index % 2 === 0
+                    ? "0 2px 10px oklch(0.66 0.22 31 / 0.3)"
+                    : "0 2px 10px oklch(0.79 0.16 170 / 0.3)",
+                }}
+              />
               <div className="relative z-10 text-center">
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 tabular-nums">
+                <div className="mb-3 font-mono text-4xl font-black tabular-nums text-white transition-all duration-300 group-hover:scale-110 sm:text-5xl lg:text-6xl">
                   <AnimatedCounter
                     end={stat.value}
                     suffix={stat.suffix}
@@ -64,11 +87,11 @@ export function StatsSection({ stats, title, subtitle }: StatsSectionProps) {
                     duration={2000}
                   />
                 </div>
-                <div className="text-sm sm:text-base font-semibold text-white/80 mb-1">
+                <div className="mb-2 text-sm font-bold tracking-wide text-white/90 transition-colors duration-300 group-hover:text-white sm:text-base">
                   {stat.label}
                 </div>
                 {stat.description && (
-                  <div className="text-xs text-white/60">
+                  <div className="text-xs leading-relaxed text-white/65 transition-colors duration-300 group-hover:text-white/80">
                     {stat.description}
                   </div>
                 )}

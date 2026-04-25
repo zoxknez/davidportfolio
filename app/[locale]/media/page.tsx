@@ -24,7 +24,7 @@ export default function MediaPage() {
     },
     {
       type: "image" as const,
-      src: "https://images.unsplash.com/photo-1517963879466-cd115eb9d433?q=80&w=1600&auto=format&fit=crop",
+      src: "https://images.unsplash.com/photo-1574680096141-1cddd32e04ca?q=80&w=1600&auto=format&fit=crop",
       title: "Strength & Power",
     },
     {

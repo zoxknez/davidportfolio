@@ -106,7 +106,6 @@ export default function AboutPage() {
     jobTitle: "Elite Fitness Coach",
     description: "Professional fitness coach and mentor based in Dubai, originally from Serbia. Known for his journey from a small village to international success.",
     url: SITE.url,
-    image: `${SITE.url}/david-about.jpg`,
     sameAs: [
       SOCIAL_LINKS.instagram.url,
       SOCIAL_LINKS.threads.url,
@@ -200,8 +199,8 @@ export default function AboutPage() {
             <div className="relative">
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden glass-card">
                 <Image
-                  src="/david-about.jpg"
-                  alt="David Knežević"
+                  src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1600&auto=format&fit=crop"
+                  alt="Strength training environment representing David Knežević coaching"
                   fill
                   className="object-cover"
                   priority

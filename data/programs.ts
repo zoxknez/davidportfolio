@@ -46,7 +46,7 @@ export const programs: Program[] = [
     daysPerWeek: 5,
     trailer: "https://cdn.coverr.co/videos/coverr-crossfit-battle-ropes-1566/1080p.mp4",
     image:
-      "https://images.unsplash.com/photo-1517963879466-cd115eb9d433?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1574680096141-1cddd32e04ca?q=80&w=1600&auto=format&fit=crop",
     gallery: [
       "https://images.unsplash.com/photo-1550345332-09e3ac987658?q=80&w=1600&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=1600&auto=format&fit=crop",

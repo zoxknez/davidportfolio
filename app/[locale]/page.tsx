@@ -47,54 +47,55 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-dvh font-sans text-zinc-900 dark:text-zinc-50">
-      
-      {/* Hero Section */}
-      <div className="relative">
-        <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col items-center justify-center gap-8 px-6 py-12">
+    <div className="min-h-dvh font-sans text-white">
+      <div className="relative border-b border-white/12">
+        <main className="mx-auto flex w-full max-w-7xl flex-col px-4 pb-10 pt-6 sm:px-6 sm:pb-12 lg:px-8">
           <Hero />
         </main>
       </div>
 
-      {/* Stats Section */}
-      <section className="relative py-20 sm:py-32 px-6">
-        <div className="mx-auto max-w-6xl">
-          <StatsSection stats={stats} />
+      <section className="relative px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+        <div className="mx-auto max-w-7xl">
+          <StatsSection
+            stats={stats}
+            title="Proof you can scan in seconds"
+            subtitle="A coaching system should show outcomes clearly: people helped, standards kept, and the discipline behind each transformation."
+          />
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative py-20 sm:py-32 px-6">
-        <div className="mx-auto max-w-6xl">
+      <section className="relative border-y border-white/12 bg-white/[0.03] px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+        <div className="mx-auto max-w-7xl">
           <FeaturesSection
             features={features}
-            title="Why Choose Elite Coaching"
-            subtitle="Everything you need to achieve your fitness goals"
+            title="A stronger system than motivation"
+            subtitle="Every touchpoint is built around clarity: exact goals, repeatable training blocks, visible progress, and enough accountability to keep going."
             columns={3}
           />
         </div>
       </section>
 
-      {/* Success Stories */}
-      <section className="relative py-20 sm:py-32 px-6">
-        <div className="mx-auto max-w-6xl">
-          <SuccessStories stories={successStories} />
+      <section className="relative px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+        <div className="mx-auto max-w-7xl">
+          <SuccessStories
+            stories={successStories}
+            title="Transformations with a timeline"
+            subtitle="The story matters, but the numbers keep it honest."
+          />
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="relative py-20 sm:py-32 px-6">
-        <div className="mx-auto max-w-4xl">
-          <Testimonials 
-            testimonials={testimonials} 
+      <section className="relative border-y border-white/12 bg-white/[0.03] px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+        <div className="mx-auto max-w-5xl">
+          <Testimonials
+            testimonials={testimonials}
             title={t("testimonials.title")}
             subtitle={t("testimonials.subtitle")}
           />
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative py-20 sm:py-32 px-6">
+      <section className="relative px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
         <CtaSection />
       </section>
     </div>

@@ -87,11 +87,11 @@ export function Header() {
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: isVisible ? 0 : -100 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-400",
         isScrolled
-          ? "bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/20"
+          ? "border-b border-white/12 bg-[rgba(6,8,12,0.92)] shadow-2xl shadow-black/40 backdrop-blur-2xl"
           : "bg-transparent"
       )}
     >
@@ -100,16 +100,17 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2.5 group"
           >
             <motion.div
-              whileHover={{ scale: 1.05, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-white/20 to-white/5 border border-white/20 backdrop-blur-sm"
+              whileHover={{ scale: 1.08, rotate: 8 }}
+              whileTap={{ scale: 0.92 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-[oklch(0.66_0.22_31_/_0.4)] bg-[oklch(0.66_0.22_31_/_0.2)] backdrop-blur-sm shadow-lg shadow-[oklch(0.66_0.22_31_/_0.25)]"
             >
               <Dumbbell className="h-5 w-5 text-white" />
             </motion.div>
-            <span className="text-lg font-bold text-white tracking-tight group-hover:text-white/80 transition-colors">
+            <span className="text-lg font-black tracking-tight text-white transition-all duration-300 group-hover:text-white/90 group-hover:tracking-normal">
               {SITE.shortName}
             </span>
           </Link>
@@ -127,10 +128,10 @@ export function Header() {
                   <>
                     <button
                       className={cn(
-                        "flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
+                        "flex items-center gap-1 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200",
                         activeDropdown === item.name
-                          ? "text-white bg-white/10"
-                          : "text-white/70 hover:text-white hover:bg-white/5"
+                          ? "bg-white/10 text-white"
+                          : "text-white/70 hover:bg-white/[0.07] hover:text-white"
                       )}
                     >
                       <item.icon className="h-4 w-4" />
@@ -149,7 +150,7 @@ export function Header() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-2 w-64 rounded-xl bg-black/90 backdrop-blur-xl border border-white/10 shadow-xl shadow-black/50 overflow-hidden"
+                          className="absolute left-0 top-full mt-2 w-64 overflow-hidden rounded-lg border border-white/10 bg-[rgba(6,8,12,0.96)] shadow-xl shadow-black/50 backdrop-blur-xl"
                         >
                           {item.children.map((child) => (
                             <Link
@@ -158,8 +159,8 @@ export function Header() {
                               className={cn(
                                 "flex items-start gap-3 px-4 py-3 transition-colors",
                                 isActive(child.href)
-                                  ? "bg-white/10 text-white"
-                                  : "text-white/70 hover:bg-white/5 hover:text-white"
+                                  ? "bg-[oklch(0.79_0.16_170_/_0.1)] text-white"
+                                  : "text-white/70 hover:bg-white/[0.06] hover:text-white"
                               )}
                             >
                               <child.icon className="h-5 w-5 mt-0.5 shrink-0" />
@@ -177,13 +178,13 @@ export function Header() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
+                      "flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-300",
                       isActive(item.href)
-                        ? "text-white bg-white/10"
-                        : "text-white/70 hover:text-white hover:bg-white/5"
+                        ? "bg-[oklch(0.79_0.16_170_/_0.15)] text-white shadow-lg shadow-[oklch(0.79_0.16_170_/_0.2)]"
+                        : "text-white/70 hover:bg-white/[0.09] hover:text-white hover:shadow-md"
                     )}
                   >
-                    <item.icon className="h-4 w-4" />
+                    <item.icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
                     {item.name}
                   </Link>
                 )}
@@ -200,7 +201,7 @@ export function Header() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-white/70 hover:text-white hover:bg-white/10"
+                className="rounded-lg text-white/70 hover:bg-white/10 hover:text-white"
                 asChild
               >
                 <Link href="/auth/login">
@@ -210,7 +211,7 @@ export function Header() {
               </Button>
               <Button
                 size="sm"
-                className="bg-white text-black hover:bg-white/90"
+                className="rounded-lg bg-[oklch(0.66_0.22_31)] text-white hover:bg-[oklch(0.72_0.22_31)]"
                 asChild
               >
                 <Link href="/auth/register">
@@ -234,14 +235,14 @@ export function Header() {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-full sm:w-80 bg-black/95 backdrop-blur-xl border-l border-white/10 p-0"
+                className="w-full border-l border-white/10 bg-[rgba(6,8,12,0.97)] p-0 backdrop-blur-xl sm:w-80"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 <div className="flex flex-col h-full">
                   {/* Mobile menu header */}
                   <div className="flex items-center justify-between p-4 border-b border-white/10">
                     <Link href="/" className="flex items-center gap-2">
-                      <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[oklch(0.66_0.22_31_/_0.18)]">
                         <Dumbbell className="h-4 w-4 text-white" />
                       </div>
                       <span className="font-bold text-white">{SITE.shortName}</span>
@@ -273,8 +274,8 @@ export function Header() {
                                   className={cn(
                                     "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors",
                                     isActive(child.href)
-                                      ? "bg-white/10 text-white"
-                                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                                      ? "bg-[oklch(0.79_0.16_170_/_0.12)] text-white"
+                                      : "text-white/70 hover:bg-white/[0.06] hover:text-white"
                                   )}
                                 >
                                   <child.icon className="h-5 w-5" />
@@ -290,10 +291,10 @@ export function Header() {
                               href={item.href}
                               className={cn(
                                 "flex items-center gap-3 px-3 py-3 rounded-lg transition-colors",
-                                isActive(item.href)
-                                  ? "bg-white/10 text-white"
-                                  : "text-white/70 hover:bg-white/5 hover:text-white"
-                              )}
+                                  isActive(item.href)
+                                    ? "bg-[oklch(0.79_0.16_170_/_0.12)] text-white"
+                                    : "text-white/70 hover:bg-white/[0.06] hover:text-white"
+                                )}
                             >
                               <item.icon className="h-5 w-5" />
                               <span className="font-medium">{item.name}</span>
@@ -308,7 +309,7 @@ export function Header() {
                   <div className="p-4 border-t border-white/10 space-y-2">
                     <Button
                       variant="outline"
-                      className="w-full border-white/20 text-white hover:bg-white/10"
+                      className="w-full rounded-lg border-white/20 text-white hover:bg-white/10"
                       asChild
                     >
                       <Link href="/auth/login">
@@ -317,7 +318,7 @@ export function Header() {
                       </Link>
                     </Button>
                     <Button
-                      className="w-full bg-white text-black hover:bg-white/90"
+                      className="w-full rounded-lg bg-[oklch(0.66_0.22_31)] text-white hover:bg-[oklch(0.72_0.22_31)]"
                       asChild
                     >
                       <Link href="/auth/register">

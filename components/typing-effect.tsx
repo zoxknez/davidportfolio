@@ -18,9 +18,9 @@ export function TypingEffect({
   className = "",
 }: TypingEffectProps) {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [currentText, setCurrentText] = useState("");
+  const [currentText, setCurrentText] = useState(() => phrases[0] ?? "");
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(true);
 
   useEffect(() => {
     const currentPhrase = phrases[currentPhraseIndex];

@@ -4,7 +4,6 @@ import "../globals.css";
 import { ScrollToTop } from "@/components/scroll-to-top";
 import { Analytics } from "@vercel/analytics/next";
 import { clientEnv } from "@/lib/env";
-import { reportWebVitals } from "@/lib/web-vitals";
 import { Toaster } from "sonner";
 import { AnimatedBackground } from "@/components/animated-background";
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -16,9 +15,6 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { routing } from "@/lib/navigation";
 import { isRtlLocale, type Locale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
-
-// Export reportWebVitals for Next.js to use
-export { reportWebVitals };
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -128,12 +124,17 @@ export default async function LocaleLayout({ children, params }: Props) {
   const isRtl = isRtlLocale(locale as Locale);
 
   return (
-    <html lang={locale} dir={isRtl ? "rtl" : "ltr"} suppressHydrationWarning className="bg-black">
+    <html
+      lang={locale}
+      dir={isRtl ? "rtl" : "ltr"}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} bg-background`}
+    >
       <head>
         <HomePageSchemas />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-transparent`}
+        className="bg-background antialiased"
         suppressHydrationWarning
       >
         <NextIntlClientProvider messages={messages}>
