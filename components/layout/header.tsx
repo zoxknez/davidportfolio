@@ -85,6 +85,7 @@ export function Header() {
 
   return (
     <motion.header
+      data-site-header
       initial={{ y: -100 }}
       animate={{ y: isVisible ? 0 : -100 }}
       transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}

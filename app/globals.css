@@ -191,6 +191,16 @@
   }
 }
 
+body:has(.kinetic-home) [data-site-header],
+body:has(.kinetic-home) [data-site-footer],
+body:has(.kinetic-home) > div > div.fixed.inset-0.-z-50 {
+  display: none;
+}
+
+body:has(.kinetic-home) #main-content {
+  padding-top: 0;
+}
+
 @layer utilities {
   .glass-card {
     --glass-accent: oklch(0.79 0.16 170);

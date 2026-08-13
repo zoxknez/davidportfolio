@@ -80,7 +80,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative border-t border-white/10 bg-[rgba(6,8,12,0.96)]">
+    <footer data-site-footer className="relative border-t border-white/10 bg-[rgba(6,8,12,0.96)]">
       {/* Newsletter Section */}
       <div className="border-b border-white/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
